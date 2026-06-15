@@ -6,50 +6,19 @@
 <title>vocab.ai - Government Exam Vocabulary</title>
 <style>
 :root{
-  --black:#050505;
-  --charcoal:#111111;
-  --charcoal2:#1a1a1a;
-  --green:#16a34a;
-  --green-dark:#0f7a35;
-  --glass:rgba(255,255,255,.78);
-  --glass-soft:rgba(255,255,255,.54);
-  --glass-line:rgba(255,255,255,.36);
-  --ink:#101010;
-  --muted:#5f6368;
-  --red:#b42318;
-  --amber:#a15c07;
-  --shadow:0 24px 80px rgba(0,0,0,.34);
+  --black:#050505;--charcoal:#111;--charcoal2:#1a1a1a;--green:#16a34a;--green-dark:#0f7a35;
+  --glass:rgba(255,255,255,.78);--glass-soft:rgba(255,255,255,.54);--glass-line:rgba(255,255,255,.36);
+  --ink:#101010;--muted:#5f6368;--red:#b42318;--amber:#a15c07;--shadow:0 24px 80px rgba(0,0,0,.34);
   --page-bg:radial-gradient(circle at 10% 0%,rgba(255,255,255,.12),transparent 28rem),radial-gradient(circle at 95% 15%,rgba(22,163,74,.08),transparent 24rem),linear-gradient(135deg,var(--black) 0%,var(--charcoal) 52%,var(--charcoal2) 100%);
-  --brand:#fff;
-  --brand-accent:#8ee6ad;
-  --nav-pill-bg:rgba(255,255,255,.12);
-  --nav-pill-hover:rgba(255,255,255,.2);
-  --nav-pill-text:#f7f7f7;
-  --nav-pill-border:rgba(255,255,255,.26);
-  --nav-active-bg:rgba(255,255,255,.86);
-  --nav-active-text:#0b0b0b;
-  --footer:rgba(255,255,255,.78);
+  --brand:#fff;--brand-accent:#8ee6ad;--nav-pill-bg:rgba(255,255,255,.12);--nav-pill-hover:rgba(255,255,255,.2);
+  --nav-pill-text:#f7f7f7;--nav-pill-border:rgba(255,255,255,.26);--nav-active-bg:rgba(255,255,255,.86);--nav-active-text:#0b0b0b;--footer:rgba(255,255,255,.78);
 }
 body[data-theme="light"]{
-  --black:#f4f7f4;
-  --charcoal:#eef3ef;
-  --charcoal2:#e7eee8;
-  --glass:rgba(255,255,255,.76);
-  --glass-soft:rgba(255,255,255,.58);
-  --glass-line:rgba(12,20,14,.12);
-  --ink:#0d1510;
-  --muted:#5f6b62;
-  --shadow:0 22px 70px rgba(12,20,14,.13);
+  --black:#f4f7f4;--charcoal:#eef3ef;--charcoal2:#e7eee8;--glass:rgba(255,255,255,.76);--glass-soft:rgba(255,255,255,.58);
+  --glass-line:rgba(12,20,14,.12);--ink:#0d1510;--muted:#5f6b62;--shadow:0 22px 70px rgba(12,20,14,.13);
   --page-bg:radial-gradient(circle at 8% 0%,rgba(22,163,74,.08),transparent 24rem),radial-gradient(circle at 92% 12%,rgba(0,0,0,.06),transparent 24rem),linear-gradient(135deg,#f7faf7 0%,#eef4ef 55%,#e8efe9 100%);
-  --brand:#0b0f0c;
-  --brand-accent:#0f7a35;
-  --nav-pill-bg:rgba(255,255,255,.64);
-  --nav-pill-hover:rgba(255,255,255,.88);
-  --nav-pill-text:#111;
-  --nav-pill-border:rgba(0,0,0,.12);
-  --nav-active-bg:#101010;
-  --nav-active-text:#fff;
-  --footer:#5f6b62;
+  --brand:#0b0f0c;--brand-accent:#0f7a35;--nav-pill-bg:rgba(255,255,255,.64);--nav-pill-hover:rgba(255,255,255,.88);
+  --nav-pill-text:#111;--nav-pill-border:rgba(0,0,0,.12);--nav-active-bg:#101010;--nav-active-text:#fff;--footer:#5f6b62;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--page-bg);background-attachment:fixed;color:var(--ink);line-height:1.5;transition:background .25s ease,color .25s ease}
@@ -70,17 +39,36 @@ body[data-theme="light"] .theme-icon{background:rgba(16,16,16,.08);color:#0d1510
 @media(max-width:860px){.hero{grid-template-columns:1fr}.nav{align-items:flex-start;flex-direction:column}.nav-actions{justify-content:flex-start}}
 .card{background:var(--glass);border:1px solid var(--glass-line);border-radius:26px;box-shadow:var(--shadow);padding:22px;backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%)}
 .tag{display:inline-flex;color:#0b0b0b;background:rgba(255,255,255,.62);border:1px solid rgba(16,16,16,.12);border-radius:999px;padding:6px 10px;font-size:.78rem;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;box-shadow:inset 0 -2px 0 rgba(22,163,74,.62)}
-h1{font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.02;letter-spacing:-.07em;margin:0 0 12px;color:#080808}.lead{margin:0;color:#333;font-size:1.05rem;max-width:790px}
+h1{font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.02;letter-spacing:-.07em;margin:0 0 12px;color:#080808}
+.lead{margin:0;color:#333;font-size:1.05rem;max-width:790px}
 label{font-weight:900;display:block;margin:0 0 7px;color:#0a0a0a}
 input,select{width:100%;font:inherit;border:1px solid rgba(0,0,0,.14);border-radius:15px;background:rgba(255,255,255,.68);color:var(--ink);padding:13px 14px;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.75)}
 input:focus,select:focus{border-color:rgba(22,163,74,.72);box-shadow:0 0 0 4px rgba(22,163,74,.12),inset 0 1px 0 rgba(255,255,255,.75)}
-.stack{display:grid;gap:13px}.row{display:flex;gap:10px;flex-wrap:wrap}
+.stack{display:grid;gap:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
 button{border:0;border-radius:999px;padding:11px 16px;font-weight:950;cursor:pointer;background:#111;color:#fff;box-shadow:0 14px 30px rgba(0,0,0,.22)}
-button:hover{filter:brightness(1.05)}button#go,button.primary{background:var(--green);box-shadow:0 14px 28px rgba(22,163,74,.18)}button.secondary{background:rgba(255,255,255,.66);color:#111;border:1px solid rgba(0,0,0,.14);box-shadow:none}button.danger{background:rgba(255,255,255,.66);color:var(--red);border:1px solid rgba(180,35,24,.22);box-shadow:none}button:disabled{opacity:.6;cursor:not-allowed}
-.hint{font-size:.9rem;color:var(--muted);margin:0}.samples{display:flex;flex-wrap:wrap;gap:8px}.sample{border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.56);border-radius:999px;padding:6px 10px;font-weight:850;font-size:.86rem;cursor:pointer;color:#111}.sample:hover{background:rgba(255,255,255,.84);box-shadow:inset 0 -2px 0 rgba(22,163,74,.52)}.status{min-height:24px;margin-top:12px;font-weight:850;color:#333}.status.ok{color:#0f7a35}.status.err{color:var(--red)}.status.warn{color:var(--amber)}
-.results{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}@media(max-width:760px){.results{grid-template-columns:1fr}}
-.box{background:var(--glass-soft);border:1px solid rgba(255,255,255,.5);border-radius:20px;padding:16px;min-height:105px;box-shadow:inset 0 1px 0 rgba(255,255,255,.58)}.box-title{font-size:.76rem;font-weight:950;color:#3b3b3b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}.box-value{font-weight:850;white-space:pre-wrap;color:#080808}.meaning{font-size:1.2rem}
-.history{margin-top:18px}.history-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.history-list{display:grid;gap:10px}.item{border:1px solid rgba(255,255,255,.5);border-radius:20px;background:var(--glass-soft);padding:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.58)}.item b{font-size:1.05rem}.meta{color:var(--muted);font-size:.85rem;margin-top:4px}.empty{color:var(--muted);border:1px dashed rgba(0,0,0,.18);border-radius:18px;padding:16px;background:rgba(255,255,255,.45)}.footer{font-size:.88rem;color:var(--footer);margin-top:16px;text-align:center}.note{background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.5);color:#111;border-radius:18px;padding:12px;font-weight:750;box-shadow:inset 0 -2px 0 rgba(22,163,74,.42)}
+button:hover{filter:brightness(1.05)}
+button#go,button.primary{background:var(--green);box-shadow:0 14px 28px rgba(22,163,74,.18)}
+button.secondary{background:rgba(255,255,255,.66);color:#111;border:1px solid rgba(0,0,0,.14);box-shadow:none}
+button.danger{background:rgba(255,255,255,.66);color:var(--red);border:1px solid rgba(180,35,24,.22);box-shadow:none}
+button:disabled{opacity:.6;cursor:not-allowed}
+.hint{font-size:.9rem;color:var(--muted);margin:0}
+.samples{display:flex;flex-wrap:wrap;gap:8px}
+.sample{border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.56);border-radius:999px;padding:6px 10px;font-weight:850;font-size:.86rem;cursor:pointer;color:#111}
+.sample:hover{background:rgba(255,255,255,.84);box-shadow:inset 0 -2px 0 rgba(22,163,74,.52)}
+.status{min-height:24px;margin-top:12px;font-weight:850;color:#333}
+.status.ok{color:#0f7a35}.status.err{color:var(--red)}.status.warn{color:var(--amber)}
+.results{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+@media(max-width:760px){.results{grid-template-columns:1fr}}
+.box{background:var(--glass-soft);border:1px solid rgba(255,255,255,.5);border-radius:20px;padding:16px;min-height:105px;box-shadow:inset 0 1px 0 rgba(255,255,255,.58)}
+.box-title{font-size:.76rem;font-weight:950;color:#3b3b3b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+.box-value{font-weight:850;white-space:pre-wrap;color:#080808}.meaning{font-size:1.2rem}
+.history{margin-top:18px}.history-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.history-list{display:grid;gap:10px}.item{border:1px solid rgba(255,255,255,.5);border-radius:20px;background:var(--glass-soft);padding:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.58)}
+.item b{font-size:1.05rem}.meta{color:var(--muted);font-size:.85rem;margin-top:4px}
+.empty{color:var(--muted);border:1px dashed rgba(0,0,0,.18);border-radius:18px;padding:16px;background:rgba(255,255,255,.45)}
+.footer{font-size:.88rem;color:var(--footer);margin-top:16px;text-align:center}
+.note{background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.5);color:#111;border-radius:18px;padding:12px;font-weight:750;box-shadow:inset 0 -2px 0 rgba(22,163,74,.42)}
 @media print{body{background:#fff;color:#000}.nav,.hero,.footer,.history-head .row{display:none}.wrap{width:100%;padding:0}.card{box-shadow:none;border:0;background:#fff}.item,.box,.note{border:1px solid #ddd;background:#fff}}
 </style>
 </head>
@@ -88,11 +76,12 @@ button:hover{filter:brightness(1.05)}button#go,button.primary{background:var(--g
 <main class="wrap">
   <div class="nav">
     <div class="brand">vocab<span>.ai</span></div>
-    <div class="nav-actions" aria-label="Government exam vocabulary sections">
+    <div class="nav-actions" aria-label="Government exam English sections">
       <button class="pill" type="button" data-mode="One Word Substitution" onclick="setMode('One Word Substitution')">One Word Substitution</button>
       <button class="pill" type="button" data-mode="Idioms" onclick="setMode('Idioms')">Idioms</button>
       <button class="pill active" type="button" data-mode="Antonyms & Synonyms" onclick="setMode('Antonyms & Synonyms')">Antonyms & Synonyms</button>
       <button class="pill" type="button" data-mode="Spellings" onclick="setMode('Spellings')">Spellings</button>
+      <button class="pill" type="button" data-mode="Grammar" onclick="setMode('Grammar')">Grammar</button>
       <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to light theme" title="Switch to light theme"><span id="themeIcon" class="theme-icon" aria-hidden="true">☾</span><span id="themeLabel" class="sr-only">Dark theme</span></button>
     </div>
   </div>
@@ -114,10 +103,10 @@ button:hover{filter:brightness(1.05)}button#go,button.primary{background:var(--g
   </section>
 
   <section class="card">
-    <div class="note">Revision tip: Generate words you miss in practice sets, then use the saved PDF for quick review before mocks.</div>
+    <div class="note">Revision tip: Generate words, phrases, spelling traps, and grammar points you miss in practice sets. Download the saved PDF for quick review before mocks.</div>
     <div class="results">
       <div class="box"><div class="box-title">Section</div><div class="box-value" id="rMode">-</div></div>
-      <div class="box"><div class="box-title">Word / Phrase</div><div class="box-value" id="rTerm">-</div></div>
+      <div class="box"><div class="box-title">Word / Phrase / Topic</div><div class="box-value" id="rTerm">-</div></div>
       <div class="box"><div class="box-title">Hindi Meaning</div><div class="box-value meaning" id="rMeaning">-</div></div>
       <div class="box"><div class="box-title">Synonyms (2)</div><div class="box-value" id="rSyn">-</div></div>
       <div class="box"><div class="box-title">Antonyms (2)</div><div class="box-value" id="rAnt">-</div></div>
@@ -127,7 +116,7 @@ button:hover{filter:brightness(1.05)}button#go,button.primary{background:var(--g
   </section>
 
   <section class="card history">
-    <div class="history-head"><div><h2 style="margin:0">Saved vocabulary revision list</h2><p class="hint">Stored locally in this browser.</p></div><div class="row"><button class="primary" onclick="savePdf()">Download / Save PDF</button><button class="secondary" onclick="downloadJson()">Download JSON</button><button class="danger" onclick="clearHistory()">Clear</button></div></div>
+    <div class="history-head"><div><h2 style="margin:0">Saved exam revision list</h2><p class="hint">Stored locally in this browser.</p></div><div class="row"><button class="primary" onclick="savePdf()">Download / Save PDF</button><button class="secondary" onclick="downloadJson()">Download JSON</button><button class="danger" onclick="clearHistory()">Clear</button></div></div>
     <div id="history" class="history-list"></div>
   </section>
 
@@ -135,17 +124,19 @@ button:hover{filter:brightness(1.05)}button#go,button.primary{background:var(--g
 </main>
 
 <script>
-const KEY='vocab-ai-history-v3',OLD_KEYS=['vocab-ai-ssc-cgl-history-v2','vocab-ai-ssc-cgl-history-v1'];
+const KEY='vocab-ai-history-v4',OLD_KEYS=['vocab-ai-history-v3','vocab-ai-ssc-cgl-history-v2','vocab-ai-ssc-cgl-history-v1'];
 const THEME_KEY='vocab-ai-theme';
 let current=null,mode='Antonyms & Synonyms';
 const $=id=>document.getElementById(id);
 const FULL_ONE_WORD='One Word Substitution';
 const FULL_ANT_SYN='Antonyms & Synonyms';
+const GRAMMAR='Grammar';
 const modes={
   [FULL_ONE_WORD]:{label:'One Word Substitution',hint:'Enter one-word substitution words or short definitions used in government exams.',placeholder:'Example: bibliophile, philanthropist, omnipresent',samples:['bibliophile','philanthropist','omnipresent','optimist','introvert']},
   'Idioms':{label:'Idiom or phrase',hint:'Enter idioms and phrases asked in government exam English sections.',placeholder:'Example: a blessing in disguise, once in a blue moon',samples:['a blessing in disguise','once in a blue moon','spill the beans','break the ice','hit the nail on the head']},
   [FULL_ANT_SYN]:{label:'Word or phrase',hint:'Focused on synonyms, antonyms, meaning, and example usage.',placeholder:'Example: benevolent, prudent, mitigate',samples:['benevolent','diligent','mitigate','obsolete','prudent']},
-  'Spellings':{label:'Spelling word',hint:'Enter commonly confused spelling words and save them for revision.',placeholder:'Example: accommodate, separate, perseverance',samples:['accommodate','separate','perseverance','conscience','exaggerate']}
+  'Spellings':{label:'Spelling word',hint:'Enter commonly confused spelling words and save them for revision.',placeholder:'Example: accommodate, separate, perseverance',samples:['accommodate','separate','perseverance','conscience','exaggerate']},
+  [GRAMMAR]:{label:'Grammar topic or rule',hint:'Enter grammar topics, rules, or error-spotting points for exam revision.',placeholder:'Example: subject verb agreement, tenses, active voice',samples:['subject verb agreement','tenses','active voice','passive voice','direct speech','indirect speech']}
 };
 const built={
  benevolent:{m:'दयालु, परोपकारी',s:['kind','generous'],a:['cruel','selfish'],e:'The benevolent officer helped the poor villagers.',h:'दयालु अधिकारी ने गरीब ग्रामीणों की सहायता की।'},
@@ -167,33 +158,41 @@ const built={
  'once in a blue moon':{m:'बहुत कम, कभी-कभार',s:['rarely','seldom'],a:['often','frequently'],e:'He misses his vocabulary revision once in a blue moon.',h:'वह बहुत कम ही अपनी शब्दावली की पुनरावृत्ति छोड़ता है।'},
  'spill the beans':{m:'राज़ खोलना',s:['reveal','disclose'],a:['hide','conceal'],e:'Do not spill the beans before the official result.',h:'आधिकारिक परिणाम से पहले राज़ न खोलें।'},
  'break the ice':{m:'झिझक दूर करना, बातचीत शुरू करना',s:['start conversation','ease tension'],a:['create tension','stay silent'],e:'The teacher used a simple question to break the ice.',h:'शिक्षक ने झिझक दूर करने के लिए एक सरल प्रश्न का उपयोग किया।'},
- 'hit the nail on the head':{m:'बिल्कुल सही बात कहना',s:['be exact','speak accurately'],a:['miss the point','be wrong'],e:'Her answer hit the nail on the head.',h:'उसका उत्तर बिल्कुल सही था।'}
+ 'hit the nail on the head':{m:'बिल्कुल सही बात कहना',s:['be exact','speak accurately'],a:['miss the point','be wrong'],e:'Her answer hit the nail on the head.',h:'उसका उत्तर बिल्कुल सही था।'},
+ 'subject verb agreement':{m:'कर्ता और क्रिया का सही मेल',s:['concord','agreement'],a:['disagreement','mismatch'],e:'The verb must agree with the subject in number and person.',h:'क्रिया का कर्ता के वचन और पुरुष से मेल होना चाहिए।'},
+ tenses:{m:'काल; कार्य के समय को बताने वाला grammar topic',s:['verb time','time form'],a:['timelessness','nonfinite form'],e:'Correct tense helps show when an action happens.',h:'सही काल यह बताने में मदद करता है कि कार्य कब होता है।'},
+ 'active voice':{m:'कर्तृवाच्य; जहां कर्ता कार्य करता है',s:['direct voice','active construction'],a:['passive voice','passive construction'],e:'In active voice, the subject performs the action.',h:'कर्तृवाच्य में कर्ता कार्य करता है।'},
+ 'passive voice':{m:'कर्मवाच्य; जहां कर्म पर जोर होता है',s:['passive construction','object-focused voice'],a:['active voice','direct voice'],e:'In passive voice, the object receives the action.',h:'कर्मवाच्य में कर्म पर कार्य होता है।'},
+ 'direct speech':{m:'प्रत्यक्ष कथन; किसी के शब्दों को सीधे कहना',s:['quoted speech','direct narration'],a:['indirect speech','reported speech'],e:'Direct speech uses the exact words of the speaker.',h:'प्रत्यक्ष कथन में वक्ता के ठीक वही शब्द लिखे जाते हैं।'},
+ 'indirect speech':{m:'अप्रत्यक्ष कथन; बात को अपने शब्दों में कहना',s:['reported speech','indirect narration'],a:['direct speech','quoted speech'],e:'Indirect speech reports what someone said without exact quotation.',h:'अप्रत्यक्ष कथन में किसी की बात बिना ठीक-ठीक उद्धरण के बताई जाती है।'}
 };
-function normalizeMode(x){if(x==='OWS')return FULL_ONE_WORD;if(x==='Anto & Syno')return FULL_ANT_SYN;return x||FULL_ANT_SYN}
+function normalizeMode(x){if(x==='OWS')return FULL_ONE_WORD;if(x==='Anto & Syno')return FULL_ANT_SYN;if(x==='Grammar Rules')return GRAMMAR;return x||FULL_ANT_SYN}
 function status(t,c=''){const el=$('status');el.textContent=t;el.className='status '+c}
 function applyTheme(t){const theme=t==='light'?'light':'dark';document.body.dataset.theme=theme;const isLight=theme==='light';const icon=$('themeIcon'),label=$('themeLabel');if(icon)icon.textContent=isLight?'☀':'☾';if(label)label.textContent=isLight?'Light theme':'Dark theme';const btn=document.querySelector('.theme-toggle');if(btn){btn.setAttribute('aria-label',isLight?'Switch to dark theme':'Switch to light theme');btn.title=isLight?'Switch to dark theme':'Switch to light theme'}localStorage.setItem(THEME_KEY,theme)}
 function toggleTheme(){applyTheme((document.body.dataset.theme||'dark')==='dark'?'light':'dark')}
 function initTheme(){applyTheme(localStorage.getItem(THEME_KEY)||'dark')}
 function setMode(m){mode=normalizeMode(m);document.querySelectorAll('.pill[data-mode]').forEach(p=>p.classList.toggle('active',p.dataset.mode===mode));$('modeTag').textContent=mode;$('termLabel').textContent=modes[mode].label;$('modeHint').textContent=modes[mode].hint;$('term').placeholder=modes[mode].placeholder;renderSamples()}
 function renderSamples(){const box=$('samples');box.innerHTML='';modes[mode].samples.forEach(w=>{const b=document.createElement('button');b.className='sample';b.type='button';b.textContent=w;b.onclick=()=>{$('term').value=w;generateEntry()};box.appendChild(b)})}
-function clean(s){return(String(s||'')).trim()}function two(a){return[...new Set((a||[]).map(x=>typeof x==='string'?x:x.word).filter(Boolean).map(x=>x.toLowerCase()))].slice(0,2)}
+function clean(s){return(String(s||'')).trim()}
+function two(a){return[...new Set((a||[]).map(x=>typeof x==='string'?x:x.word).filter(Boolean).map(x=>x.toLowerCase()))].slice(0,2)}
 async function json(url){const r=await fetch(url);if(!r.ok)throw Error('fetch failed');return r.json()}
 async function hi(text){try{const j=await json('https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=en|hi');return clean(j?.responseData?.translatedText)}catch(e){return''}}
 async function words(term,rel){try{return two(await json(`https://api.datamuse.com/words?${rel}=${encodeURIComponent(term)}&max=8`))}catch(e){return[]}}
 async function dictExample(term){if(term.includes(' '))return'';try{const j=await json('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(term));for(const m of j?.[0]?.meanings||[])for(const d of m.definitions||[])if(d.example)return d.example}catch(e){}return''}
-function fallbackExample(term){if(mode==='Idioms')return `The phrase "${term}" is useful in government exam English.`;if(mode===FULL_ONE_WORD)return `The word "${term}" is often revised for one word substitution questions.`;if(mode==='Spellings')return `Write "${term}" carefully during spelling practice.`;return `The word "${term}" is useful for vocabulary revision.`}
+function fallbackExample(term){if(mode==='Idioms')return `The phrase "${term}" is useful in government exam English.`;if(mode===FULL_ONE_WORD)return `The word "${term}" is often revised for one word substitution questions.`;if(mode==='Spellings')return `Write "${term}" carefully during spelling practice.`;if(mode===GRAMMAR)return `The grammar topic "${term}" is important for error spotting and sentence improvement.`;return `The word "${term}" is useful for vocabulary revision.`}
 function setResult(d){current=d;$('rMode').textContent=d.mode;$('rTerm').textContent=d.term;$('rMeaning').textContent=d.meaning||'-';$('rSyn').textContent=d.synonyms?.length?d.synonyms.join(', '):'-';$('rAnt').textContent=d.antonyms?.length?d.antonyms.join(', '):'-';$('rEx').textContent=d.example||'-';$('rExHi').textContent=d.exampleHindi||'-'}
 function load(){let h=JSON.parse(localStorage.getItem(KEY)||'[]');for(const k of OLD_KEYS){const old=JSON.parse(localStorage.getItem(k)||'[]');if(old.length){h=[...h,...old];localStorage.removeItem(k)}}h=h.map(x=>({...x,mode:normalizeMode(x.mode)}));localStorage.setItem(KEY,JSON.stringify(h));return h}
 function saveList(h){localStorage.setItem(KEY,JSON.stringify(h));renderHistory()}
 function saveCurrent(){if(!current){status('Generate an entry first.','warn');return}const h=load();h.unshift({...current,id:Date.now(),savedAt:new Date().toLocaleString()});saveList(h);status('Saved for revision.','ok')}
-async function generateEntry(){const term=clean($('term').value);if(!term){status('Enter a word or phrase first.','err');return}const key=term.toLowerCase();$('go').disabled=true;status('Generating entry...','warn');try{let d;if(built[key]){const b=built[key];d={mode,term,meaning:b.m,synonyms:b.s,antonyms:b.a,example:b.e,exampleHindi:b.h}}else{const [meaning,synonyms,antonyms,exampleRaw]=await Promise.all([hi(term),words(term,'rel_syn'),words(term,'rel_ant'),dictExample(term)]);const example=exampleRaw||fallbackExample(term);const exampleHindi=await hi(example);d={mode,term,meaning:meaning||'Hindi meaning not found automatically.',synonyms,antonyms,example,exampleHindi:exampleHindi||'Example Hindi meaning not found automatically.'}}setResult(d);saveCurrent()}catch(e){setResult({mode,term,meaning:'Lookup failed. Try another word or use this as a manual revision entry.',synonyms:[],antonyms:[],example:fallbackExample(term),exampleHindi:'-'});saveCurrent()}finally{$('go').disabled=false}}
-function renderHistory(){const h=load();const box=$('history');if(!h.length){box.innerHTML='<div class="empty">No saved entries yet. Generate a word to start your revision list.</div>';return}box.innerHTML='';h.forEach((x,i)=>{const d=document.createElement('div');d.className='item';d.innerHTML=`<b>${i+1}. ${x.term}</b><div class="meta">${normalizeMode(x.mode)} | ${x.savedAt||''}</div><div>Hindi: ${x.meaning||'-'}</div><div>Synonyms: ${(x.synonyms||[]).join(', ')||'-'}</div><div>Antonyms: ${(x.antonyms||[]).join(', ')||'-'}</div><div>Example: ${x.example||'-'}</div><div>Hindi Example: ${x.exampleHindi||'-'}</div>`;box.appendChild(d)})}
-function textCurrent(){if(!current)return'';return `Section: ${current.mode}\nWord/Phrase: ${current.term}\nHindi Meaning: ${current.meaning}\nSynonyms: ${(current.synonyms||[]).join(', ')}\nAntonyms: ${(current.antonyms||[]).join(', ')}\nExample: ${current.example}\nExample Hindi: ${current.exampleHindi}`}
+async function generateEntry(){const term=clean($('term').value);if(!term){status('Enter a word, phrase, or grammar topic first.','err');return}const key=term.toLowerCase();$('go').disabled=true;status('Generating entry...','warn');try{let d;if(built[key]){const b=built[key];d={mode,term,meaning:b.m,synonyms:b.s,antonyms:b.a,example:b.e,exampleHindi:b.h}}else{const [meaning,synonyms,antonyms,exampleRaw]=await Promise.all([hi(term),words(term,'rel_syn'),words(term,'rel_ant'),dictExample(term)]);const example=exampleRaw||fallbackExample(term);const exampleHindi=await hi(example);d={mode,term,meaning:meaning||'Hindi meaning not found automatically.',synonyms,antonyms,example,exampleHindi:exampleHindi||'Example Hindi meaning not found automatically.'}}setResult(d);saveCurrent()}catch(e){setResult({mode,term,meaning:'Lookup failed. Try another word or use this as a manual revision entry.',synonyms:[],antonyms:[],example:fallbackExample(term),exampleHindi:'-'});saveCurrent()}finally{$('go').disabled=false}}
+function renderHistory(){const h=load();const box=$('history');if(!h.length){box.innerHTML='<div class="empty">No saved entries yet. Generate a word, phrase, or grammar topic to start your revision list.</div>';return}box.innerHTML='';h.forEach((x,i)=>{const d=document.createElement('div');d.className='item';d.innerHTML=`<b>${i+1}. ${x.term}</b><div class="meta">${normalizeMode(x.mode)} | ${x.savedAt||''}</div><div>Hindi: ${x.meaning||'-'}</div><div>Synonyms: ${(x.synonyms||[]).join(', ')||'-'}</div><div>Antonyms: ${(x.antonyms||[]).join(', ')||'-'}</div><div>Example: ${x.example||'-'}</div><div>Hindi Example: ${x.exampleHindi||'-'}</div>`;box.appendChild(d)})}
+function textCurrent(){if(!current)return'';return `Section: ${current.mode}\nWord/Phrase/Topic: ${current.term}\nHindi Meaning: ${current.meaning}\nSynonyms: ${(current.synonyms||[]).join(', ')}\nAntonyms: ${(current.antonyms||[]).join(', ')}\nExample: ${current.example}\nExample Hindi: ${current.exampleHindi}`}
 async function copyCurrent(){if(!current){status('Generate an entry first.','warn');return}await navigator.clipboard.writeText(textCurrent());status('Copied.','ok')}
 function downloadJson(){const blob=new Blob([JSON.stringify(load(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='vocab-ai-revision.json';a.click();URL.revokeObjectURL(a.href)}
-function savePdf(){const h=load();if(!h.length){status('No saved entries to download.','warn');return}const rows=h.map((x,i)=>`<article><h3>${i+1}. ${x.term}</h3><p><b>Section:</b> ${normalizeMode(x.mode)}</p><p><b>Hindi Meaning:</b> ${x.meaning||'-'}</p><p><b>Synonyms:</b> ${(x.synonyms||[]).join(', ')||'-'}</p><p><b>Antonyms:</b> ${(x.antonyms||[]).join(', ')||'-'}</p><p><b>Example:</b> ${x.example||'-'}</p><p><b>Example Meaning in Hindi:</b> ${x.exampleHindi||'-'}</p></article>`).join('');const w=window.open('','_blank');w.document.write(`<!doctype html><html><head><title>vocab.ai revision PDF</title><meta charset="utf-8"><style>body{font-family:system-ui,Arial,sans-serif;padding:24px;line-height:1.45}h1{margin-top:0}article{border-bottom:1px solid #ddd;padding:12px 0;break-inside:avoid}p{margin:5px 0}@media print{button{display:none}}</style></head><body><button onclick="window.print()">Save as PDF</button><h1>vocab.ai - Government Exam Vocabulary Revision</h1>${rows}</body></html>`);w.document.close();w.focus();setTimeout(()=>w.print(),300)}
+function savePdf(){const h=load();if(!h.length){status('No saved entries to download.','warn');return}const rows=h.map((x,i)=>`<article><h3>${i+1}. ${x.term}</h3><p><b>Section:</b> ${normalizeMode(x.mode)}</p><p><b>Hindi Meaning:</b> ${x.meaning||'-'}</p><p><b>Synonyms:</b> ${(x.synonyms||[]).join(', ')||'-'}</p><p><b>Antonyms:</b> ${(x.antonyms||[]).join(', ')||'-'}</p><p><b>Example:</b> ${x.example||'-'}</p><p><b>Example Meaning in Hindi:</b> ${x.exampleHindi||'-'}</p></article>`).join('');const w=window.open('','_blank');w.document.write(`<!doctype html><html><head><title>vocab.ai revision PDF</title><meta charset="utf-8"><style>body{font-family:system-ui,Arial,sans-serif;padding:24px;line-height:1.45}h1{margin-top:0}article{border-bottom:1px solid #ddd;padding:12px 0;break-inside:avoid}p{margin:5px 0}@media print{button{display:none}}</style></head><body><button onclick="window.print()">Save as PDF</button><h1>vocab.ai - Government Exam English Revision</h1>${rows}</body></html>`);w.document.close();w.focus();setTimeout(()=>w.print(),300)}
 function clearHistory(){if(confirm('Clear all saved revision entries?')){localStorage.removeItem(KEY);renderHistory();status('History cleared.','ok')}}
-$('term').addEventListener('keydown',e=>{if(e.key==='Enter')generateEntry()});initTheme();setMode(FULL_ANT_SYN);renderHistory();
+$('term').addEventListener('keydown',e=>{if(e.key==='Enter')generateEntry()});
+initTheme();setMode(FULL_ANT_SYN);renderHistory();
 </script>
 </body>
 </html>
