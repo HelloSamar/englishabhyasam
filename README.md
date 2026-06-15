@@ -58,4 +58,39 @@ Users paste computer-awareness notes and organise them for exam revision.
 
 ## Sync
 
-Cross-device sync will be enforced later. Current saved entries are stored locally in the browser.
+Firebase sync is now wired into the app.
+
+Users can:
+
+- Sign in with Google
+- Save revision entries locally first
+- Sync saved revision entries across devices
+- Sync syllabus checklist progress across devices
+- Keep using the app in local mode when signed out
+
+Firestore path used by the app:
+
+```text
+users/{uid}/state/main
+```
+
+Recommended Firestore rules:
+
+```js
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+
+Firebase Console checklist:
+
+- Authentication -> Google sign-in enabled
+- Authentication -> Authorized domains includes `hellosamar.github.io`
+- Firestore Database created
+- Firestore rules published
