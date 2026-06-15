@@ -1,66 +1,62 @@
-# English Abhyasam
+# vocab.ai
 
-A small GitHub Pages site for one tool: Hindi Vocabulary Helper.
+A single-purpose vocabulary web app for English learners who want quick Hindi support.
 
-## Live links
+## Goal
 
-Main site:
-
-```text
-https://hellosamar.github.io/englishabhyasam/
-```
-
-Vocabulary helper:
-
-```text
-https://hellosamar.github.io/englishabhyasam/vocab/
-```
-
-## What it does
-
-The Vocabulary Helper lets a learner enter an English word or phrase and get:
+A user enters an English word or phrase. The app returns:
 
 - Hindi meaning
 - Two synonyms
 - Two antonyms
-- Example sentence
-- Hindi translation of the example
-- Copyable AI prompt fallback
+- One example sentence
+- Hindi meaning of the example sentence
 
-The app is static and browser-based. It uses public lookup and translation endpoints where available, plus built-in verified examples for selected words and phrases.
+Every generated entry is saved in the browser so the learner can review previous searches and download them later as a PDF.
 
-## Repository structure
+## Live site
+
+After GitHub Pages is enabled, the site will be available at:
 
 ```text
-englishabhyasam/
-|-- index.html
-|-- vocab/
-|   `-- index.html
-|-- .github/
-|   `-- workflows/
-|       `-- pages.yml
-|-- .nojekyll
-`-- README.md
+https://hellosamar.github.io/vocab.ai/
 ```
 
-## Deployment
-
-This repo is configured for GitHub Pages through GitHub Actions.
-
-Expected setting:
+Current repository URL before manual rename:
 
 ```text
-Settings > Pages > Source > GitHub Actions
+https://github.com/HelloSamar/englishabhyasam
 ```
 
-Workflow file:
+## Files kept in this repository
 
 ```text
+index.html
+README.md
 .github/workflows/pages.yml
+.nojekyll
 ```
 
-## Notes
+Everything unrelated to the vocabulary app should be removed.
 
-- Do not commit API keys.
-- GitHub Pages is frontend-only.
-- For full AI generation inside the page, add a small backend later.
+## Features
+
+- Browser-based lookup
+- Local search history using `localStorage`
+- Download saved entries as PDF
+- Clear saved history
+- Works as a static GitHub Pages site
+
+## Note about accuracy
+
+This is a static frontend app. It uses public browser-side lookup services where available and built-in examples for common words. For perfect AI-quality results for every phrase, connect a small backend API later.
+
+## Rename repository to `vocab.ai`
+
+This connector can edit repository files, but it does not expose repository rename settings. Rename manually in GitHub:
+
+```text
+Settings -> General -> Repository name -> vocab.ai -> Rename
+```
+
+Then set GitHub Pages source to GitHub Actions if needed.

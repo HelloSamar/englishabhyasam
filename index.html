@@ -1,55 +1,51 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>English Abhyasam</title>
-  <meta name="description" content="Hindi Vocabulary Helper for English words and phrases." />
-  <style>
-    :root { --bg:#f8fafc; --card:#fff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0; --blue:#2563eb; --blueDark:#1d4ed8; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:linear-gradient(180deg,#eef4ff 0,#f8fafc 320px); color:var(--text); line-height:1.55; }
-    main { width:min(920px,92vw); margin:0 auto; padding:32px 0 56px; }
-    .nav { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:34px; }
-    .brand { font-size:1.2rem; font-weight:950; letter-spacing:-.03em; }
-    .brand span { color:var(--blue); }
-    .link { border:1px solid var(--line); background:#fff; border-radius:999px; padding:9px 13px; color:#334155; text-decoration:none; font-weight:800; }
-    .panel { background:rgba(255,255,255,.94); border:1px solid var(--line); border-radius:28px; padding:30px; box-shadow:0 18px 45px rgba(15,23,42,.08); }
-    .tag { display:inline-flex; border:1px solid #dbeafe; background:#eff6ff; color:var(--blue); border-radius:999px; padding:7px 11px; font-size:.82rem; font-weight:950; text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px; }
-    h1 { margin:0 0 14px; font-size:clamp(2.25rem,5vw,4.2rem); line-height:.98; letter-spacing:-.07em; }
-    p { margin:0; color:var(--muted); font-size:1.08rem; }
-    .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
-    .btn { display:inline-flex; justify-content:center; align-items:center; border-radius:999px; padding:12px 17px; background:var(--blue); color:#fff; text-decoration:none; font-weight:950; box-shadow:0 10px 22px rgba(37,99,235,.22); }
-    .btn:hover { background:var(--blueDark); }
-    .btn.secondary { background:#fff; color:#0f172a; border:1px solid var(--line); box-shadow:none; }
-    .features { margin:22px 0 0; padding-left:20px; color:#475569; }
-    .features li { margin:8px 0; }
-    footer { margin-top:22px; color:var(--muted); text-align:center; font-size:.92rem; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>vocab.ai</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--bg:#f6f8ff;--card:#fff;--text:#111827;--muted:#667085;--line:#e5e7eb;--blue:#2563eb;--dark:#172033;--green:#067647;--red:#b42318;--soft:#f3f4f6}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#eaf1ff 0,#f8fafc 300px);color:var(--text);line-height:1.5}.wrap{width:min(1100px,92vw);margin:0 auto;padding:28px 0 48px}.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{font-weight:950;font-size:1.2rem;letter-spacing:-.04em}.brand span{color:var(--blue)}.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;color:var(--muted);font-weight:800;font-size:.9rem}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;margin-bottom:18px}@media(max-width:860px){.hero{grid-template-columns:1fr}.nav{align-items:flex-start;gap:10px;flex-direction:column}}.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 50px rgba(17,24,39,.08);padding:22px}.tag{display:inline-flex;color:#1d4ed8;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-size:.78rem;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}h1{font-size:clamp(2rem,4.8vw,4rem);line-height:1.02;letter-spacing:-.07em;margin:0 0 12px}.lead{margin:0;color:#475467;font-size:1.05rem;max-width:780px}label{font-weight:900;display:block;margin:0 0 7px}input,select,textarea{width:100%;font:inherit;border:1px solid var(--line);border-radius:15px;background:#fff;color:var(--text);padding:13px 14px;outline:none}input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 4px rgba(37,99,235,.12)}.stack{display:grid;gap:13px}.row{display:flex;gap:10px;flex-wrap:wrap}button{border:0;border-radius:999px;padding:11px 16px;font-weight:950;cursor:pointer;background:var(--blue);color:#fff}button.secondary{background:#fff;color:#111827;border:1px solid var(--line)}button.danger{background:#fff;color:var(--red);border:1px solid #fecaca}button:disabled{opacity:.6;cursor:not-allowed}.hint{font-size:.9rem;color:var(--muted);margin:0}.samples{display:flex;flex-wrap:wrap;gap:8px}.sample{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:6px 10px;font-weight:800;font-size:.86rem;cursor:pointer}.status{min-height:24px;margin-top:12px;font-weight:850;color:#475467}.status.ok{color:var(--green)}.status.err{color:var(--red)}.results{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}@media(max-width:760px){.results{grid-template-columns:1fr}}.box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;min-height:105px}.box-title{font-size:.76rem;font-weight:950;color:#667085;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}.box-value{font-weight:850;white-space:pre-wrap}.meaning{font-size:1.2rem}.history{margin-top:18px}.history-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.history-list{display:grid;gap:10px}.item{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px}.item b{font-size:1.05rem}.meta{color:var(--muted);font-size:.85rem;margin-top:4px}.empty{color:var(--muted);border:1px dashed var(--line);border-radius:18px;padding:16px;background:#fff}.footer{font-size:.88rem;color:#667085;margin-top:16px;text-align:center}
+</style>
 </head>
 <body>
-  <main>
-    <div class="nav">
-      <div class="brand">English <span>Abhyasam</span></div>
-      <a class="link" href="https://github.com/HelloSamar/englishabhyasam">GitHub</a>
+<main class="wrap">
+  <div class="nav"><div class="brand">vocab<span>.ai</span></div><div class="pill">Hindi vocabulary helper</div></div>
+  <section class="hero">
+    <div class="card"><div class="tag">Word or phrase to Hindi</div><h1>Enter a word. Save every lookup. Download later as PDF.</h1><p class="lead">The learner gets Hindi meaning, two synonyms, two antonyms, an example sentence, and Hindi meaning of the example. Searches are stored in this browser for later revision.</p></div>
+    <div class="card stack">
+      <div><label for="term">Word or phrase</label><input id="term" placeholder="Example: brave, improve, in spite of" autocomplete="off"></div>
+      <div><label for="level">Hindi style</label><select id="level"><option>Simple Hindi</option><option>Very simple beginner Hindi</option><option>Exam-focused Hindi</option><option>Formal Hindi</option></select></div>
+      <div class="row"><button id="go" onclick="generateEntry()">Generate</button><button class="secondary" onclick="saveCurrent()">Save</button><button class="secondary" onclick="copyCurrent()">Copy</button></div>
+      <p class="hint">Single words usually give stronger synonym and antonym results than long phrases.</p>
+      <div class="samples"><span class="sample" onclick="sample('brave')">brave</span><span class="sample" onclick="sample('honest')">honest</span><span class="sample" onclick="sample('improve')">improve</span><span class="sample" onclick="sample('abundant')">abundant</span><span class="sample" onclick="sample('in spite of')">in spite of</span></div>
+      <div id="status" class="status"></div>
     </div>
-
-    <section class="panel">
-      <div class="tag">Vocabulary tool</div>
-      <h1>Hindi Vocabulary Helper</h1>
-      <p>Enter an English word or phrase and get a Hindi meaning, two synonyms, two antonyms, and an example sentence with Hindi translation.</p>
-      <div class="actions">
-        <a class="btn" href="./vocab/">Open Vocabulary Helper</a>
-        <a class="btn secondary" href="https://github.com/HelloSamar/englishabhyasam">View Repository</a>
-      </div>
-      <ul class="features">
-        <li>Browser-based static app</li>
-        <li>Works on GitHub Pages</li>
-        <li>Includes fallback prompt for difficult phrases</li>
-      </ul>
-    </section>
-
-    <footer>Free English vocabulary practice.</footer>
-  </main>
+  </section>
+  <section class="card">
+    <div class="results">
+      <div class="box"><div class="box-title">Word / Phrase</div><div class="box-value" id="rTerm">-</div></div>
+      <div class="box"><div class="box-title">Hindi Meaning</div><div class="box-value meaning" id="rMeaning">-</div></div>
+      <div class="box"><div class="box-title">Synonyms (2)</div><div class="box-value" id="rSyn">-</div></div>
+      <div class="box"><div class="box-title">Antonyms (2)</div><div class="box-value" id="rAnt">-</div></div>
+      <div class="box"><div class="box-title">Example</div><div class="box-value" id="rEx">-</div></div>
+      <div class="box"><div class="box-title">Example Meaning in Hindi</div><div class="box-value" id="rExHi">-</div></div>
+    </div>
+  </section>
+  <section class="card history">
+    <div class="history-head"><div><h2 style="margin:0">Saved lookups</h2><p class="hint">Stored locally in this browser.</p></div><div class="row"><button onclick="downloadPdf()">Download PDF</button><button class="secondary" onclick="downloadJson()">Download JSON</button><button class="danger" onclick="clearHistory()">Clear</button></div></div>
+    <div id="history" class="history-list"></div>
+  </section>
+  <div class="footer">Static GitHub Pages app. Results use built-in entries plus public lookup services where available.</div>
+</main>
+<script>
+const KEY='vocab-ai-history-v1';let current=null;const $=id=>document.getElementById(id);
+const built={brave:{m:'बहादुर, साहसी',s:['courageous','fearless'],a:['cowardly','fearful'],e:'The brave student answered the question confidently.',h:'बहादुर विद्यार्थी ने प्रश्न का आत्मविश्वास से उत्तर दिया।'},honest:{m:'ईमानदार, सच्चा',s:['truthful','sincere'],a:['dishonest','false'],e:'An honest person speaks the truth.',h:'एक ईमानदार व्यक्ति सच बोलता है।'},improve:{m:'सुधारना, बेहतर बनाना',s:['enhance','develop'],a:['worsen','damage'],e:'Daily practice can improve your vocabulary.',h:'रोज़ अभ्यास करने से आपकी शब्दावली सुधर सकती है।'},abundant:{m:'प्रचुर, बहुत अधिक',s:['plentiful','ample'],a:['scarce','limited'],e:'The library has abundant study material.',h:'पुस्तकालय में अध्ययन सामग्री प्रचुर मात्रा में है।'},'in spite of':{m:'के बावजूद',s:['despite','regardless of'],a:['because of','due to'],e:'In spite of the rain, they continued the match.',h:'बारिश के बावजूद उन्होंने मैच जारी रखा।'}};
+function status(t,c=''){let el=$('status');el.textContent=t;el.className='status '+c}function uniq(a){return[...new Set((a||[]).map(x=>typeof x==='string'?x:x.word).filter(Boolean).map(x=>x.trim().toLowerCase()))]}function two(a,f1,f2){let v=uniq(a).slice(0,2);if(v.length<1)v.push(f1);if(v.length<2)v.push(f2);return v}async function json(url){let r=await fetch(url);if(!r.ok)throw Error('fetch');return r.json()}async function hi(text){try{let j=await json('https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=en|hi');return (j.responseData&&j.responseData.translatedText||'').trim()}catch(e){return''}}async function words(term,rel){try{return uniq(await json('https://api.datamuse.com/words?'+rel+'='+encodeURIComponent(term)+'&max=10'))}catch(e){return[]}}async function example(term){if(term.includes(' '))return 'The phrase "'+term+'" is useful in English.';try{let j=await json('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(term));for(let m of j[0].meanings||[])for(let d of m.definitions||[])if(d.example)return d.example}catch(e){}return 'The word "'+term+'" is useful for vocabulary practice.'}
+async function generateEntry(){let term=$('term').value.trim();if(!term){status('Enter a word or phrase first.','err');return}let key=term.toLowerCase();$('go').disabled=true;status('Generating...');try{let data;if(built[key]){let b=built[key];data={term,meaning:b.m,synonyms:b.s,antonyms:b.a,example:b.e,exampleHindi:b.h,date:new Date().toLocaleString()}}else{let [meaning,syn,ant,ex]=await Promise.all([hi(term),words(term,'rel_syn'),words(term,'rel_ant'),example(term)]);let exHi=await hi(ex);data={term,meaning:meaning||'Hindi meaning not found automatically',synonyms:two(syn,'similar word not found','similar word not found'),antonyms:two(ant,'opposite word not found','opposite word not found'),example:ex,exampleHindi:exHi||'Hindi translation not found automatically',date:new Date().toLocaleString()}}current=data;renderResult(data);saveCurrent(true);status('Generated and saved.','ok')}catch(e){status('Lookup failed. Try another word.','err')}finally{$('go').disabled=false}}
+function renderResult(d){$('rTerm').textContent=d.term;$('rMeaning').textContent=d.meaning;$('rSyn').textContent=d.synonyms.join(', ');$('rAnt').textContent=d.antonyms.join(', ');$('rEx').textContent=d.example;$('rExHi').textContent=d.exampleHindi}
+function history(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}function setHistory(a){localStorage.setItem(KEY,JSON.stringify(a));renderHistory()}function saveCurrent(silent=false){if(!current){if(!silent)status('Generate an entry first.','err');return}let a=history().filter(x=>x.term.toLowerCase()!=current.term.toLowerCase());a.unshift(current);setHistory(a);if(!silent)status('Saved.','ok')}function renderHistory(){let a=history(),el=$('history');if(!a.length){el.innerHTML='<div class="empty">No saved lookups yet.</div>';return}el.innerHTML=a.map(x=>'<div class="item"><b>'+esc(x.term)+'</b><div class="meta">'+esc(x.date||'')+'</div><div>Hindi: '+esc(x.meaning)+'</div><div>Synonyms: '+esc(x.synonyms.join(', '))+'</div><div>Antonyms: '+esc(x.antonyms.join(', '))+'</div><div>Example: '+esc(x.example)+'</div></div>').join('')}function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}function text(d){return `Word/Phrase: ${d.term}\nHindi Meaning: ${d.meaning}\nSynonyms (2): ${d.synonyms.join(', ')}\nAntonyms (2): ${d.antonyms.join(', ')}\nExample: ${d.example}\nExample Meaning in Hindi: ${d.exampleHindi}`}async function copyCurrent(){if(!current){status('Generate an entry first.','err');return}await navigator.clipboard.writeText(text(current));status('Copied.','ok')}function sample(w){$('term').value=w;generateEntry()}function clearHistory(){if(confirm('Delete all saved lookups from this browser?'))setHistory([])}function downloadJson(){let blob=new Blob([JSON.stringify(history(),null,2)],{type:'application/json'});download(blob,'vocab-ai-history.json')}function download(blob,name){let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}function downloadPdf(){let a=history();if(!a.length){status('No saved entries to download.','err');return}if(!window.jspdf){window.print();return}let doc=new window.jspdf.jsPDF();let y=16;doc.setFontSize(18);doc.text('vocab.ai saved lookups',14,y);y+=10;doc.setFontSize(10);doc.text('Generated from browser history',14,y);y+=10;doc.setFontSize(11);a.forEach((d,i)=>{let lines=doc.splitTextToSize((i+1)+'. '+text(d),180);if(y+lines.length*6>280){doc.addPage();y=16}doc.text(lines,14,y);y+=lines.length*6+8});doc.save('vocab-ai-history.pdf');status('PDF downloaded.','ok')}renderHistory();$('term').addEventListener('keydown',e=>{if(e.key==='Enter')generateEntry()});
+</script>
 </body>
 </html>
