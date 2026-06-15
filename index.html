@@ -15,14 +15,14 @@
     <div class="nav-actions" aria-label="Government exam vocabulary sections">
       <button class="pill" type="button" data-mode="One Word Substitution" onclick="setMode('One Word Substitution')">One Word Substitution</button>
       <button class="pill" type="button" data-mode="Idioms" onclick="setMode('Idioms')">Idioms</button>
-      <button class="pill active" type="button" data-mode="Anto & Syno" onclick="setMode('Anto & Syno')">Anto &amp; Syno</button>
+      <button class="pill active" type="button" data-mode="Antonyms &amp; Synonyms" onclick="setMode('Antonyms & Synonyms')">Antonyms &amp; Synonyms</button>
       <button class="pill" type="button" data-mode="Spellings" onclick="setMode('Spellings')">Spellings</button>
     </div>
   </div>
 
   <section class="hero">
     <div class="card">
-      <div class="tag" id="modeTag">Anto & Syno</div>
+      <div class="tag" id="modeTag">Antonyms &amp; Synonyms</div>
       <h1>Enter a word or phrase. Build your government exam revision PDF automatically.</h1>
       <p class="lead">For each lookup, get Hindi meaning, two synonyms, two antonyms, an exam-style example sentence, and the Hindi meaning of that example. Every generated entry is saved locally for later revision.</p>
     </div>
@@ -59,13 +59,14 @@
 
 <script>
 const KEY='vocab-ai-history-v3',OLD_KEYS=['vocab-ai-ssc-cgl-history-v2','vocab-ai-ssc-cgl-history-v1'];
-let current=null,mode='Anto & Syno';
+let current=null,mode='Antonyms & Synonyms';
 const $=id=>document.getElementById(id);
 const FULL_ONE_WORD='One Word Substitution';
+const FULL_ANT_SYN='Antonyms & Synonyms';
 const modes={
   [FULL_ONE_WORD]:{label:'One Word Substitution',hint:'Enter one-word substitution words or short definitions used in government exams.',placeholder:'Example: bibliophile, philanthropist, omnipresent',samples:['bibliophile','philanthropist','omnipresent','optimist','introvert']},
   'Idioms':{label:'Idiom or phrase',hint:'Enter idioms and phrases asked in government exam English sections.',placeholder:'Example: a blessing in disguise, once in a blue moon',samples:['a blessing in disguise','once in a blue moon','spill the beans','break the ice','hit the nail on the head']},
-  'Anto & Syno':{label:'Word or phrase',hint:'Focused on synonyms, antonyms, meaning, and example usage.',placeholder:'Example: benevolent, prudent, mitigate',samples:['benevolent','diligent','mitigate','obsolete','prudent']},
+  [FULL_ANT_SYN]:{label:'Word or phrase',hint:'Focused on synonyms, antonyms, meaning, and example usage.',placeholder:'Example: benevolent, prudent, mitigate',samples:['benevolent','diligent','mitigate','obsolete','prudent']},
   'Spellings':{label:'Spelling word',hint:'Enter commonly confused spelling words and save them for revision.',placeholder:'Example: accommodate, separate, perseverance',samples:['accommodate','separate','perseverance','conscience','exaggerate']}
 };
 const built={
@@ -92,14 +93,14 @@ exaggerate:{m:'बढ़ा-चढ़ाकर कहना',s:['overstate','mag
 };
 function status(t,c=''){let el=$('status');el.textContent=t;el.className='status '+c}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function normalizeMode(v){return String(v||'Anto & Syno').length===3&&String(v||'').charAt(0)==='O'?FULL_ONE_WORD:v}
+function normalizeMode(v){let s=String(v||FULL_ANT_SYN);if(s.length===3&&s.charAt(0)==='O')return FULL_ONE_WORD;if(s==='Anto & Syno'||s==='Antonyms and synonyms')return FULL_ANT_SYN;return s}
 function uniq(a){return[...new Set((a||[]).map(x=>typeof x==='string'?x:x.word).filter(Boolean).map(x=>x.trim().toLowerCase()).filter(Boolean))]}
 function two(a,f1,f2){let v=uniq(a).slice(0,2);if(v.length<1)v.push(f1);if(v.length<2)v.push(f2);return v}
 async function json(url){let r=await fetch(url);if(!r.ok)throw Error('fetch');return r.json()}
 async function hi(text){try{let j=await json('https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=en|hi');return (j.responseData&&j.responseData.translatedText||'').trim()}catch(e){return''}}
 async function words(term,rel){try{return uniq(await json('https://api.datamuse.com/words?'+rel+'='+encodeURIComponent(term)+'&max=10'))}catch(e){return[]}}
 async function example(term){if(term.includes(' '))return 'The phrase "'+term+'" can appear in a government exam English question.';try{let j=await json('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(term));for(let m of j[0].meanings||[])for(let d of m.definitions||[])if(d.example)return d.example}catch(e){}return 'The word "'+term+'" is useful for government exam vocabulary revision.'}
-function setMode(next){mode=next;document.querySelectorAll('.pill').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));let m=modes[mode];$('modeTag').textContent=mode;$('termLabel').textContent=m.label;$('term').placeholder=m.placeholder;$('modeHint').textContent=m.hint;renderSamples();status('Section selected: '+mode,'ok')}
+function setMode(next){mode=normalizeMode(next);document.querySelectorAll('.pill').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));let m=modes[mode];$('modeTag').textContent=mode;$('termLabel').textContent=m.label;$('term').placeholder=m.placeholder;$('modeHint').textContent=m.hint;renderSamples();status('Section selected: '+mode,'ok')}
 function renderSamples(){let samples=modes[mode].samples;$('samples').innerHTML=samples.map(w=>'<span class="sample" onclick="sample(\''+esc(w).replace(/'/g,'\\&#39;')+'\')">'+esc(w)+'</span>').join('')}
 async function generateEntry(){let term=$('term').value.trim();if(!term){status('Enter a word or phrase first.','err');return}let key=term.toLowerCase();$('go').disabled=true;status('Generating revision entry...','warn');try{let data;if(built[key]){let b=built[key];data={mode,term,meaning:b.m,synonyms:b.s,antonyms:b.a,example:b.e,exampleHindi:b.h,date:new Date().toLocaleString()}}else{let [meaning,syn,ant,ex]=await Promise.all([hi(term),words(term,'rel_syn'),words(term,'rel_ant'),example(term)]);let exHi=await hi(ex);data={mode,term,meaning:meaning||'Hindi meaning not found automatically',synonyms:two(syn,'similar word not found','similar word not found'),antonyms:two(ant,'opposite word not found','opposite word not found'),example:ex,exampleHindi:exHi||'Hindi translation not found automatically',date:new Date().toLocaleString()}}current=data;renderResult(data);saveCurrent(true);status('Generated and saved for revision.','ok')}catch(e){status('Lookup failed. Try another word or phrase.','err')}finally{$('go').disabled=false}}
 function renderResult(d){d.mode=normalizeMode(d.mode);$('rMode').textContent=d.mode||mode;$('rTerm').textContent=d.term;$('rMeaning').textContent=d.meaning;$('rSyn').textContent=d.synonyms.join(', ');$('rAnt').textContent=d.antonyms.join(', ');$('rEx').textContent=d.example;$('rExHi').textContent=d.exampleHindi}
