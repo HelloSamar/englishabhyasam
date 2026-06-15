@@ -26,37 +26,49 @@ That function calls the OpenAI API from the server side, so the OpenAI API key i
 
 If the function is not deployed or fails, the frontend falls back to the older browser-side dictionary and translation lookup.
 
-## Firebase Function deployment
+## No-local-terminal deployment
 
-Install Firebase CLI:
+You do not need to run deployment commands on your computer. This repo has a GitHub Actions workflow:
 
-```bash
-npm install -g firebase-tools
+```text
+.github/workflows/deploy-functions.yml
 ```
 
-Login and select the Firebase project:
+Use GitHub's web UI:
 
-```bash
-firebase login
-firebase use abhyasam-ai
-```
+1. Open the repository on GitHub.
+2. Go to **Settings -> Secrets and variables -> Actions**.
+3. Add these repository secrets:
+   - `OPENAI_API_KEY`
+   - `GCP_SERVICE_ACCOUNT_KEY`
+4. Go to **Actions -> Deploy Firebase Functions**.
+5. Click **Run workflow**.
 
-Set the OpenAI API key as a Firebase secret:
+The workflow will:
 
-```bash
-firebase functions:secrets:set OPENAI_API_KEY
-```
+- authenticate to Google Cloud
+- create or update the Firebase Secret named `OPENAI_API_KEY`
+- install function dependencies
+- deploy only Firebase Functions
 
-Deploy only functions:
+## Required Google Cloud service account
 
-```bash
-cd functions
-npm install
-cd ..
-firebase deploy --only functions
-```
+`GCP_SERVICE_ACCOUNT_KEY` must be a JSON key for a Google Cloud service account that can deploy Firebase Functions and update Secret Manager secrets for the `abhyasam-ai` project.
 
-The function currently defaults to `gpt-5.5`. To use another OpenAI model, edit the `model` fallback in `functions/index.js` before deploying.
+Recommended roles for that service account:
+
+- Firebase Admin
+- Cloud Functions Admin
+- Cloud Build Editor
+- Secret Manager Admin
+- Service Account User
+- Artifact Registry Writer
+
+Create the key in Google Cloud Console, then paste the full JSON content as the GitHub secret value.
+
+## Model
+
+The function currently defaults to `gpt-5.5`. To use another OpenAI model, edit the `model` fallback in `functions/index.js` before running the workflow.
 
 ## Who it is for
 
