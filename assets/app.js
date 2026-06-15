@@ -32,13 +32,7 @@ const sections = [
   ['computer', 'Computer']
 ];
 
-const englishModes = [
-  'One Word Substitution',
-  'Idioms',
-  'Antonyms & Synonyms',
-  'Spellings',
-  'Grammar'
-];
+const englishModes = ['One Word Substitution', 'Idioms', 'Antonyms & Synonyms', 'Spellings', 'Grammar'];
 
 const builtIn = {
   benevolent: { meaning: 'दयालु, परोपकारी', syn: ['kind', 'charitable'], ant: ['cruel', 'selfish'], ex: 'A benevolent officer helped the villagers during the flood.', hi: 'एक दयालु अधिकारी ने बाढ़ के समय ग्रामीणों की मदद की।' },
@@ -96,14 +90,14 @@ function normalizeSection(id) {
 }
 
 function normalizeEnglishMode(mode) {
-  const aliases = {
-    OWS: 'One Word Substitution',
-    'Anto & Syno': 'Antonyms & Synonyms',
-    'Anto Syno': 'Antonyms & Synonyms',
-    'Antonyms and synonyms': 'Antonyms & Synonyms'
-  };
+  const aliases = { OWS: 'One Word Substitution', 'Anto & Syno': 'Antonyms & Synonyms', 'Anto Syno': 'Antonyms & Synonyms', 'Antonyms and synonyms': 'Antonyms & Synonyms' };
   if (englishModes.includes(mode)) return mode;
   return aliases[mode] || 'Antonyms & Synonyms';
+}
+
+function displaySectionLabel(label) {
+  const aliases = { 'Computer Mode': 'Computer', OWS: 'One Word Substitution', 'Anto & Syno': 'Antonyms & Synonyms', 'Anto Syno': 'Antonyms & Synonyms' };
+  return aliases[label] || label || 'Revision';
 }
 
 function renderNav() {
@@ -153,7 +147,7 @@ function renderEnglishModes() {
 }
 
 function addSyllabus() {
-  const text = $('syllabusInput').value.trim();
+  const text = clean($('syllabusInput').value);
   if (!text) return;
   const list = normalizeSyllabus(store.get('syllabus', []));
   if (list.some(item => item.text.toLowerCase() === text.toLowerCase())) {
@@ -167,20 +161,20 @@ function addSyllabus() {
 }
 
 function clearSyllabus() { if (confirm('Clear syllabus list?')) setSyllabus([]); }
-
 function setSyllabus(list) { store.set('syllabus', normalizeSyllabus(list)); renderSyllabus(); queueSync(); }
 
 function normalizeSyllabus(list) {
+  const seen = new Set();
   return (Array.isArray(list) ? list : []).filter(item => item && item.text).map(item => {
     const now = Date.now();
+    const text = clean(item.text);
     const created = item.created || item.createdMs || now;
-    return {
-      id: item.id || `${item.text}-${created}`,
-      text: String(item.text).trim(),
-      done: Boolean(item.done),
-      created,
-      updatedMs: item.updatedMs || item.createdMs || created
-    };
+    return { id: item.id || `${text}-${created}`, text, done: Boolean(item.done), created, updatedMs: item.updatedMs || item.createdMs || created };
+  }).filter(item => {
+    const key = item.text.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
   });
 }
 
@@ -226,7 +220,7 @@ function analysePaste(type) {
   const ids = { gs: 'gsPaste', math: 'mathPaste', reason: 'reasonPaste', computer: 'computerPaste' };
   const outs = { gs: 'gsOut', math: 'mathOut', reason: 'reasonOut', computer: 'computerOut' };
   const sectionIds = { gs: 'general-studies', math: 'mathematics', reason: 'reasoning', computer: 'computer' };
-  const text = $(ids[type]).value.trim();
+  const text = clean($(ids[type]).value);
   if (!text) return;
   const title = text.split(/[\n.]/)[0].slice(0, 80) || 'Revision note';
   const subject = detectSubject(type, text);
@@ -257,14 +251,14 @@ async function generateEnglish() {
   if (!term) return;
   const button = $('generateEnglishBtn');
   button.disabled = true;
-  $('engOut').innerHTML = `<div class="box" style="grid-column:1/-1"><div class="out-title">Generating</div><div class="out">Preparing a clean English revision entry...</div></div>`;
+  $('engOut').innerHTML = `<div class="box english-main"><div class="out-title">Generating</div><div class="out">Preparing entry...</div></div>`;
   try {
     const data = await buildEnglishEntry(term);
     const body = englishBody(term, data);
     current = { id: crypto.randomUUID(), sectionId: 'english', section: 'English', title: term, body, created: new Date().toLocaleString(), createdMs: Date.now() };
     renderEnglishOutput(term, data);
   } catch (error) {
-    const data = fallbackEnglishData(term, 'Lookup failed. Try again or refine manually.');
+    const data = fallbackEnglishData(term, 'Lookup failed. Refine manually if needed.');
     const body = englishBody(term, data);
     current = { id: crypto.randomUUID(), sectionId: 'english', section: 'English', title: term, body, created: new Date().toLocaleString(), createdMs: Date.now() };
     renderEnglishOutput(term, data);
@@ -285,24 +279,17 @@ async function buildEnglishEntry(term) {
   const ex = example || defaultExample(term);
   const hi = await translateToHindi(ex);
   return {
-    meaning: meaning || 'Not found automatically. Refine manually if needed.',
-    syn: syn.length ? syn : ['Not available automatically', '—'],
-    ant: ant.length ? ant : ['Not available automatically', '—'],
+    meaning: meaning || 'Not found automatically',
+    syn,
+    ant,
     ex,
-    hi: hi || 'Hindi translation not found automatically.',
-    note: meaning || syn.length || ant.length ? 'Auto-generated lookup. Review once before final revision.' : 'Limited automatic data found. Use this as a draft.'
+    hi: hi || 'Hindi translation not found automatically',
+    note: meaning || syn.length || ant.length ? 'Review once before final revision.' : 'Limited automatic data found. Review manually.'
   };
 }
 
 function fallbackEnglishData(term, note) {
-  return {
-    meaning: 'Not found automatically. Refine manually if needed.',
-    syn: ['Not available automatically', '—'],
-    ant: ['Not available automatically', '—'],
-    ex: defaultExample(term),
-    hi: 'Hindi translation not found automatically.',
-    note
-  };
+  return { meaning: 'Not found automatically', syn: [], ant: [], ex: defaultExample(term), hi: 'Hindi translation not found automatically', note };
 }
 
 async function translateToHindi(text) {
@@ -318,11 +305,17 @@ async function translateToHindi(text) {
 
 async function getDatamuseWords(term, relation) {
   try {
-    const url = `https://api.datamuse.com/words?${relation}=${encodeURIComponent(term)}&max=10`;
+    const url = `https://api.datamuse.com/words?${relation}=${encodeURIComponent(term)}&max=12`;
     const response = await fetch(url);
     if (!response.ok) return [];
     const json = await response.json();
-    return [...new Set((Array.isArray(json) ? json : []).map(item => clean(item.word)).filter(Boolean).filter(word => word.toLowerCase() !== term.toLowerCase()))].slice(0, 2);
+    return [...new Set((Array.isArray(json) ? json : [])
+      .map(item => clean(item.word))
+      .filter(Boolean)
+      .filter(word => word.toLowerCase() !== term.toLowerCase())
+      .filter(word => word.length > 2)
+      .filter(word => !/^[-'\s]+$/.test(word))
+    )].slice(0, 2);
   } catch { return []; }
 }
 
@@ -350,24 +343,30 @@ function defaultExample(term) {
   return `${term} is useful for English vocabulary revision.`;
 }
 
+function listText(values) {
+  const cleanValues = (Array.isArray(values) ? values : []).map(clean).filter(Boolean).filter(value => value !== '—');
+  return cleanValues.length ? cleanValues.join(', ') : 'Not available automatically';
+}
+
 function englishBody(term, data) {
-  return `Category: ${englishMode}\nWord/Phrase: ${term}\nHindi Meaning: ${data.meaning}\nSynonyms (2): ${data.syn.join(', ')}\nAntonyms (2): ${data.ant.join(', ')}\nExample Sentence: ${data.ex}\nExample Meaning in Hindi: ${data.hi}\nNote: ${data.note || 'Review once before final revision.'}`;
+  return `${term} - ${data.meaning}\n\nExample\n${data.ex}\n${data.hi}\n\nSynonym\n${listText(data.syn)}\n\nAntonym\n${listText(data.ant)}\n\nCategory\n${englishMode}`;
 }
 
 function renderEnglishOutput(term, data) {
+  const summary = englishBody(term, data);
   const rows = [
-    ['Category', englishMode],
-    ['Word / Phrase', term],
-    ['Hindi Meaning', data.meaning],
-    ['Synonyms (2)', data.syn.join(', ')],
-    ['Antonyms (2)', data.ant.join(', ')],
-    ['Example Sentence', data.ex],
-    ['Example Meaning in Hindi', data.hi]
+    ['Hindi meaning', data.meaning],
+    ['Example', `${data.ex}\n${data.hi}`],
+    ['Synonym', listText(data.syn)],
+    ['Antonym', listText(data.ant)],
+    ['Category', englishMode]
   ];
-  $('engOut').innerHTML = `<div class="box" style="grid-column:1/-1"><div class="out-title">English Revision Entry</div><div class="out">${esc(englishBody(term, data))}</div></div>${cards(rows)}`;
+  $('engOut').innerHTML = `<div class="box english-main" style="grid-column:1/-1"><div class="out">${esc(summary)}</div></div>${cards(rows)}`;
 }
 
-function cards(rows) { return rows.map(([title, value]) => `<div class="box"><div class="out-title">${esc(title)}</div><div class="out">${esc(value)}</div></div>`).join(''); }
+function cards(rows) {
+  return rows.map(([title, value]) => `<div class="box"><div class="out-title">${esc(title)}</div><div class="out">${esc(value)}</div></div>`).join('');
+}
 
 function clearEnglish() { $('engInput').value = ''; $('engOut').innerHTML = ''; current = null; }
 
@@ -390,138 +389,91 @@ function saveCurrent() {
 
 function setSaved(items) { store.set('saved', dedupe(items)); renderHistory(); queueSync(); }
 
-function deleteItem(id) {
-  if (confirm('Delete this item?')) {
-    const items = store.get('saved', []);
-    setSaved(items.filter(item => item.id !== id));
-  }
+function dedupe(items) {
+  const map = new Map();
+  (Array.isArray(items) ? items : []).forEach(item => {
+    if (!item) return;
+    const id = item.id || `${item.section || ''}-${item.title || ''}-${item.createdMs || item.savedMs || Date.now()}`;
+    const normalized = { ...item, id, section: displaySectionLabel(item.section), sectionId: normalizeSection(item.sectionId || item.section || 'english') };
+    const existing = map.get(id);
+    if (!existing || (normalized.savedMs || normalized.createdMs || 0) > (existing.savedMs || existing.createdMs || 0)) map.set(id, normalized);
+  });
+  return [...map.values()].sort((a, b) => (b.savedMs || b.createdMs || 0) - (a.savedMs || a.createdMs || 0));
+}
+
+function removeSaved(id) {
+  if (!confirm('Remove this saved item?')) return;
+  setSaved(store.get('saved', []).filter(item => item.id !== id));
 }
 
 function renderHistory() {
-  const h = $('history');
+  const history = $('history');
   const items = dedupe(store.get('saved', []));
-  h.innerHTML = items.length ? '' : '<div class="empty-state">No saved revision entries yet.</div>';
-  items.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'card-delete no-print';
-    deleteBtn.textContent = '×';
-    deleteBtn.title = 'Delete item';
-    deleteBtn.onclick = (e) => { e.preventDefault(); deleteItem(item.id); };
-    card.innerHTML = `<span class="tag">${esc(displaySection(item.section))}</span><h3>${esc(item.title)}</h3><div class="small">${esc(item.created || '')}</div><div class="out">${esc(item.body)}</div>`;
-    card.appendChild(deleteBtn);
-    h.appendChild(card);
-  });
+  if (!items.length) {
+    history.innerHTML = '<div class="empty-state">No saved revision entries yet.</div>';
+    return;
+  }
+  history.innerHTML = items.map(item => `<article class="card"><button class="card-delete no-print" data-delete="${esc(item.id)}" title="Remove">×</button><span class="tag">${esc(displaySectionLabel(item.section))}</span><h3>${esc(item.title || 'Revision item')}</h3><p class="small">${esc(item.created || '')}</p><div class="out">${esc(item.body || '')}</div></article>`).join('');
+  history.querySelectorAll('[data-delete]').forEach(button => button.onclick = () => removeSaved(button.dataset.delete));
 }
 
-function displaySection(section) {
-  if (section === 'Computer Mode') return 'Computer';
-  if (section === 'Anto & Syno' || section === 'Anto Syno') return 'Antonyms & Synonyms';
-  if (section === 'OWS') return 'One Word Substitution';
-  return section || 'Revision';
-}
-
-function clearSaved() { if (confirm('Clear saved revision list?')) setSaved([]); }
+function clearSaved() { if (confirm('Clear all saved revision entries?')) setSaved([]); }
 
 function downloadJSON() {
-  const blob = new Blob([JSON.stringify({ saved: store.get('saved', []), syllabus: store.get('syllabus', []) }, null, 2)], { type: 'application/json' });
+  const payload = JSON.stringify({ saved: store.get('saved', []), syllabus: store.get('syllabus', []) }, null, 2);
+  const blob = new Blob([payload], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
+  a.href = url;
   a.download = 'abhyasam-ai-revision.json';
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(a.href);
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
-function dedupe(items) {
-  const seen = new Set();
-  return (Array.isArray(items) ? items : []).filter(item => item && item.title).filter(item => {
-    const id = item.id || `${item.section}-${item.title}-${item.created}`;
-    item.id = id;
-    if (seen.has(id)) return false;
-    seen.add(id);
-    return true;
-  }).sort((a, b) => (b.createdMs || b.savedMs || 0) - (a.createdMs || a.savedMs || 0));
-}
-
-function setSyncStatus(html) { $('syncStatus').innerHTML = html; }
-
-function localState() { return { saved: dedupe(store.get('saved', [])), syllabus: normalizeSyllabus(store.get('syllabus', [])) }; }
-
-function applyState(data) {
-  applyingRemote = true;
-  store.set('saved', dedupe(data.saved || []));
-  store.set('syllabus', normalizeSyllabus(data.syllabus || []));
-  renderHistory();
-  renderSyllabus();
-  applyingRemote = false;
-}
-
-async function initFirebase() {
+function initFirebase() {
   try {
     const app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
-    onAuthStateChanged(auth, handleAuthState);
+    onAuthStateChanged(auth, async account => {
+      user = account;
+      if (remoteUnsub) { remoteUnsub(); remoteUnsub = null; }
+      updateAuthUI();
+      if (user) {
+        setSyncStatus(`Signed in as ${esc(user.email || 'Google user')}. Loading sync...`);
+        await pullFromCloud(true);
+        listenCloud();
+        queueSync();
+      } else {
+        setSyncStatus('Local mode. Sign in to sync across devices.');
+      }
+    });
   } catch (error) {
-    setSyncStatus(`Firebase not ready. Local mode is active. ${esc(error.code || error.message || '')}`);
+    setSyncStatus('Firebase setup error: ' + (error.code || error.message || error));
   }
 }
+
+function userDoc() { return doc(db, 'users', user.uid, 'state', 'main'); }
 
 async function login() {
   try { await signInWithPopup(auth, new GoogleAuthProvider()); }
-  catch (error) { setSyncStatus(`Sign-in failed: ${esc(error.code || error.message)}`); }
+  catch (error) { setSyncStatus('Sign-in failed: ' + (error.code || error.message || error)); }
 }
 
-async function logout() { if (auth) await signOut(auth); }
-
-async function handleAuthState(currentUser) {
-  user = currentUser;
-  if (remoteUnsub) { remoteUnsub(); remoteUnsub = null; }
-  if (!user) {
-    $('loginBtn').classList.remove('hidden');
-    $('logoutBtn').classList.add('hidden');
-    $('syncNowBtn').classList.add('hidden');
-    setSyncStatus('Local mode. Sign in to sync across devices.');
-    return;
-  }
-  $('loginBtn').classList.add('hidden');
-  $('logoutBtn').classList.remove('hidden');
-  $('syncNowBtn').classList.remove('hidden');
-  setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Sync starting...`);
-  const ref = doc(db, 'users', user.uid, 'state', 'main');
-  try {
-    const snap = await getDoc(ref);
-    const local = localState();
-    let merged = local;
-    if (snap.exists()) {
-      const cloud = snap.data() || {};
-      merged = { saved: dedupe([...(local.saved || []), ...(cloud.saved || [])]), syllabus: mergeSyllabus(local.syllabus || [], cloud.syllabus || []) };
-      applyState(merged);
-    }
-    await setDoc(ref, { ...merged, updatedAt: serverTimestamp() }, { merge: true });
-    remoteUnsub = onSnapshot(ref, snapshot => {
-      if (applyingRemote || !snapshot.exists()) return;
-      applyState(snapshot.data() || {});
-      setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Synced.`);
-    }, error => {
-      setSyncStatus(`Sync listener failed: ${esc(error.code || error.message)}`);
-    });
-    setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Synced.`);
-  } catch (error) {
-    setSyncStatus(`Signed in, but sync failed: ${esc(error.code || error.message)}`);
-  }
+async function logout() {
+  try { await signOut(auth); }
+  catch (error) { setSyncStatus('Sign-out failed: ' + (error.code || error.message || error)); }
 }
 
-function mergeSyllabus(local, cloud) {
-  const map = new Map();
-  [...normalizeSyllabus(local), ...normalizeSyllabus(cloud)].forEach(item => {
-    const id = item.id || item.text;
-    const existing = map.get(id);
-    if (!existing || (item.updatedMs || 0) >= (existing.updatedMs || 0)) map.set(id, { ...item, id });
-  });
-  return [...map.values()].sort((a, b) => (a.created || 0) - (b.created || 0));
+function updateAuthUI() {
+  $('loginBtn').classList.toggle('hidden', Boolean(user));
+  $('logoutBtn').classList.toggle('hidden', !user);
+  $('syncNowBtn').classList.toggle('hidden', !user);
 }
+
+function setSyncStatus(message) { $('syncStatus').innerHTML = message; }
 
 function queueSync() {
   if (applyingRemote || !user || !db) return;
@@ -529,14 +481,60 @@ function queueSync() {
   syncTimer = setTimeout(() => syncToCloud(false), 700);
 }
 
-async function syncToCloud(manual) {
-  if (!user || !db) { if (manual) setSyncStatus('Sign in first to sync.'); return; }
+function localState() {
+  return { saved: dedupe(store.get('saved', [])), syllabus: normalizeSyllabus(store.get('syllabus', [])) };
+}
+
+async function pullFromCloud(merge = true) {
+  if (!user || !db) return;
   try {
-    await setDoc(doc(db, 'users', user.uid, 'state', 'main'), { ...localState(), updatedAt: serverTimestamp() }, { merge: true });
-    setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Synced.`);
+    const snap = await getDoc(userDoc());
+    if (!snap.exists()) return syncToCloud(false);
+    const remote = snap.data() || {};
+    if (merge) applyRemoteState(remote);
+    setSyncStatus('<strong>Synced.</strong> Your revision data is connected to Google sign-in.');
   } catch (error) {
-    setSyncStatus(`Sync failed: ${esc(error.code || error.message)}`);
+    setSyncStatus('Sync load failed: ' + (error.code || error.message || error));
   }
 }
 
-init();
+async function syncToCloud(manual) {
+  if (!user || !db) { setSyncStatus('Sign in first to sync.'); return; }
+  try {
+    await setDoc(userDoc(), { ...localState(), updatedAt: serverTimestamp(), updatedMs: Date.now() }, { merge: true });
+    if (manual) setSyncStatus('<strong>Synced now.</strong>');
+  } catch (error) {
+    setSyncStatus('Sync failed: ' + (error.code || error.message || error));
+  }
+}
+
+function listenCloud() {
+  if (!user || !db) return;
+  remoteUnsub = onSnapshot(userDoc(), snap => {
+    if (!snap.exists()) return;
+    applyRemoteState(snap.data() || {});
+  }, error => setSyncStatus('Live sync error: ' + (error.code || error.message || error)));
+}
+
+function applyRemoteState(remote) {
+  applyingRemote = true;
+  const mergedSaved = dedupe([...(store.get('saved', []) || []), ...(remote.saved || [])]);
+  const mergedSyllabus = mergeSyllabus(store.get('syllabus', []), remote.syllabus || []);
+  store.set('saved', mergedSaved);
+  store.set('syllabus', mergedSyllabus);
+  renderHistory();
+  renderSyllabus();
+  applyingRemote = false;
+}
+
+function mergeSyllabus(local, remote) {
+  const map = new Map();
+  [...normalizeSyllabus(local), ...normalizeSyllabus(remote)].forEach(item => {
+    const key = item.id || item.text.toLowerCase();
+    const old = map.get(key);
+    if (!old || (item.updatedMs || 0) >= (old.updatedMs || 0)) map.set(key, item);
+  });
+  return normalizeSyllabus([...map.values()]).sort((a, b) => (a.created || 0) - (b.created || 0));
+}
+
+window.addEventListener('DOMContentLoaded', init);
