@@ -41,6 +41,7 @@
       <div class="box"><div class="box-title">Synonyms</div><div class="box-value" id="rSyn">-</div></div>
       <div class="box"><div class="box-title">Antonyms</div><div class="box-value" id="rAnt">-</div></div>
       <div class="box"><div class="box-title">Example</div><div class="box-value" id="rEx">-</div></div>
+      <div class="box"><div class="box-title">Example Hindi</div><div class="box-value" id="rExHi">-</div></div>
     </div>
   </section>
 
@@ -53,6 +54,7 @@
 const KEY='vocab-ai-history-v4';
 let current=null,mode='Antonyms & Synonyms';
 const $=id=>document.getElementById(id);
+const built={};
 function status(t,c=''){let el=$('status');el.textContent=t;el.className='status '+c}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function uniq(a){return[...new Set((a||[]).map(x=>typeof x==='string'?x:x.word).filter(Boolean).map(x=>x.trim().toLowerCase()).filter(Boolean))]}
