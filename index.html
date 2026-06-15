@@ -1,88 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vocabulary — English Abhyasam</title>
-  <link rel="stylesheet" href="../assets/style.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>English Abhyasam</title>
+  <meta name="description" content="Free English practice tools for government exam aspirants." />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --soft: #eff6ff;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0, var(--bg) 300px);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1040px, 92vw); margin: 0 auto; padding: 28px 0 48px; }
+    nav { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 34px; }
+    .brand { font-weight: 950; letter-spacing: -0.03em; font-size: 1.2rem; }
+    .brand span { color: var(--blue); }
+    .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .nav-links a { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 8px 12px; font-weight: 800; color: #334155; }
+    .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px; align-items: stretch; }
+    @media (max-width: 800px) { .hero { grid-template-columns: 1fr; } nav { align-items: flex-start; flex-direction: column; } }
+    .panel { background: rgba(255,255,255,.94); border: 1px solid var(--line); border-radius: 26px; padding: 26px; box-shadow: var(--shadow); }
+    .label { display: inline-flex; background: var(--soft); color: var(--blue); border: 1px solid #dbeafe; border-radius: 999px; padding: 7px 11px; font-size: .82rem; font-weight: 950; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px; }
+    h1 { font-size: clamp(2.25rem, 5vw, 4.2rem); line-height: .98; letter-spacing: -0.07em; margin: 0 0 14px; }
+    .lead { color: #475569; font-size: 1.08rem; margin: 0; max-width: 720px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; padding: 12px 17px; font-weight: 950; background: var(--blue); color: #fff; box-shadow: 0 10px 22px rgba(37, 99, 235, .22); }
+    .btn:hover { background: var(--blue-dark); }
+    .btn.secondary { background: #fff; color: #0f172a; border: 1px solid var(--line); box-shadow: none; }
+    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 20px; }
+    @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+    .card h2 { margin: 0 0 7px; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); }
+    .status-list { margin: 0; padding-left: 18px; color: #475569; }
+    .status-list li { margin: 8px 0; }
+    footer { margin-top: 22px; color: var(--muted); text-align: center; font-size: .92rem; }
+  </style>
 </head>
 <body>
-<nav>
-  <div class="nav-in">
-    <a href="../index.html" class="logo"><img src="../assets/logo.png" alt="English Abhyasam" class="logo-img"/><span class="logo-name">English <span>Abhyasam</span></span></a>
-    <div class="nav-links">
-      <a href="../index.html" class="nl">Home</a>
-      <a href="../grammar/index.html" class="nl">Grammar</a>
-      <a href="index.html" class="nl on">Vocabulary</a>
-      <a href="../editorials/index.html" class="nl">Editorials</a>
-      <a href="../tests/index.html" class="nl">Mock Tests</a>
-      <a href="../journey.html" class="nl">The Journey</a>
-    </div>
-    <a href="../support.html" class="btn-support">Support Us</a>
-    <button class="nav-ham" onclick="document.getElementById('mob-menu').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-  <div class="mobile-menu" id="mob-menu">
-    <a href="../index.html">Home</a><a href="../grammar/index.html">Grammar</a>
-    <a href="index.html" class="on">Vocabulary</a><a href="../editorials/index.html">Editorials</a>
-    <a href="../tests/index.html">Mock Tests</a><a href="../journey.html">The Journey</a>
-    <a href="../support.html">Support Us</a>
-  </div>
-</nav>
+  <main class="wrap">
+    <nav>
+      <a class="brand" href="./">English <span>Abhyasam</span></a>
+      <div class="nav-links">
+        <a href="./vocab/">Vocabulary Helper</a>
+        <a href="https://github.com/HelloSamar/englishabhyasam">GitHub</a>
+      </div>
+    </nav>
 
-<div class="wrap page">
-  <div class="breadcrumb"><a href="../index.html">Home</a><span>›</span>Vocabulary</div>
-  <div class="sec-head">
-    <div class="sec-label">Vocabulary</div>
-    <div class="sec-title">Words that actually appear in exams.</div>
-    <div class="sec-sub">Curated lists from SSC CGL, CHSL, MTS and Railway previous papers — not random dumps.</div>
-  </div>
+    <section class="hero">
+      <div class="panel">
+        <div class="label">Free English Practice</div>
+        <h1>Simple English tools for exam preparation.</h1>
+        <p class="lead">English Abhyasam is being built as a free preparation platform for learners who want practical grammar, vocabulary, reading, and test practice.</p>
+        <div class="actions">
+          <a class="btn" href="./vocab/">Open Vocabulary Helper</a>
+          <a class="btn secondary" href="https://github.com/HelloSamar/englishabhyasam">View Repository</a>
+        </div>
+      </div>
 
-  <div style="display:flex;flex-direction:column;gap:10px">
-    <a href="synonyms.html" class="g-row">
-      <div class="g-icon" style="background:#EEF3FF">🔄</div>
-      <div class="g-body">
-        <div class="g-title">Synonyms & Antonyms</div>
-        <div class="g-sub">200+ words · 3 sets · Searchable table with PDF download</div>
-        <div class="g-chips"><span class="chip chip-blue">List</span><span class="chip chip-green">Searchable</span></div>
+      <div class="panel">
+        <div class="label">Available now</div>
+        <ul class="status-list">
+          <li>Hindi meaning for English words and phrases</li>
+          <li>Two synonyms and two antonyms</li>
+          <li>Example sentence with Hindi translation</li>
+          <li>Copyable AI prompt fallback for difficult phrases</li>
+        </ul>
       </div>
-      <div class="g-arrow">→</div>
-    </a>
-    <a href="one-word.html" class="g-row">
-      <div class="g-icon" style="background:#F0FDF4">📝</div>
-      <div class="g-body">
-        <div class="g-title">One Word Substitution</div>
-        <div class="g-sub">150+ words · 2 sets · High-frequency SSC words</div>
-        <div class="g-chips"><span class="chip chip-blue">List</span><span class="chip chip-green">Searchable</span></div>
-      </div>
-      <div class="g-arrow">→</div>
-    </a>
-    <a href="idioms.html" class="g-row">
-      <div class="g-icon" style="background:#FFFBEB">💬</div>
-      <div class="g-body">
-        <div class="g-title">Idioms & Phrases</div>
-        <div class="g-sub">100+ entries · Meaning + usage examples</div>
-        <div class="g-chips"><span class="chip chip-blue">List</span><span class="chip chip-amber">Examples</span></div>
-      </div>
-      <div class="g-arrow">→</div>
-    </a>
-    <a href="quiz.html" class="g-row" style="background:var(--blue);border-color:var(--blue)">
-      <div class="g-icon" style="background:rgba(255,255,255,0.15)">🧠</div>
-      <div class="g-body">
-        <div class="g-title" style="color:#fff">Vocab Quiz</div>
-        <div class="g-sub" style="color:rgba(255,255,255,0.65)">Randomised · 10 questions · Synonyms, Antonyms & OWS</div>
-      </div>
-      <div class="g-arrow" style="color:rgba(255,255,255,0.5)">→</div>
-    </a>
-  </div>
-</div>
+    </section>
 
-<footer>
-  <div class="footer-in">
-    <div class="footer-left"><div class="footer-logo">English <span>Abhyasam</span></div><div class="footer-tag">Free and made with love & passion for every aspirant.</div></div>
-    <div class="footer-links">
-      <a href="https://t.me/EnglishAbhyasam" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</a>
-      <a href="https://www.youtube.com/@EnglishAbhyasam" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</a>
-    </div>
-  </div>
-</footer>
+    <section class="cards" aria-label="Planned sections">
+      <div class="card">
+        <h2>Vocabulary</h2>
+        <p>Live helper is available now. Curated exam word lists can be added next.</p>
+      </div>
+      <div class="card">
+        <h2>Grammar</h2>
+        <p>Future section for tense, voice, narration, subject-verb agreement, and error spotting.</p>
+      </div>
+      <div class="card">
+        <h2>Editorials</h2>
+        <p>Future section for reading practice with highlighted vocabulary and comprehension.</p>
+      </div>
+      <div class="card">
+        <h2>Mock Tests</h2>
+        <p>Future section for timed quizzes with score and review.</p>
+      </div>
+    </section>
+
+    <footer>Free for learners. Built for practical exam preparation.</footer>
+  </main>
 </body>
 </html>
