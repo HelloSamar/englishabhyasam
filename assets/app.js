@@ -1,0 +1,356 @@
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyDAcUxeN8DfsBYtg1h_0_90UxDUOrgFYrM',
+  authDomain: 'abhyasam-ai.firebaseapp.com',
+  projectId: 'abhyasam-ai',
+  storageBucket: 'abhyasam-ai.firebasestorage.app',
+  messagingSenderId: '198014381698',
+  appId: '1:198014381698:web:8bab20f7158daf0b458e9b',
+  measurementId: 'G-MPTZBDSW9J'
+};
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+    catch { return fallback; }
+  },
+  set(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+};
+const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+
+const sections = [
+  ['syllabus', 'Syllabus'],
+  ['general-studies', 'General Studies'],
+  ['english', 'English'],
+  ['mathematics', 'Mathematics'],
+  ['reasoning', 'Reasoning'],
+  ['computer', 'Computer']
+];
+
+const englishModeData = {
+  'One Word Substitution': { label: 'One Word Substitution word/phrase', samples: ['philanthropist', 'omniscient', 'bibliophile', 'benevolent'] },
+  'Idioms': { label: 'Idiom or phrase', samples: ['break the ice', 'hit the nail on the head', 'once in a blue moon'] },
+  'Antonyms & Synonyms': { label: 'Word for antonyms and synonyms', samples: ['diligent', 'prudent', 'mitigate', 'obsolete'] },
+  'Spellings': { label: 'Spelling word', samples: ['accommodation', 'committee', 'necessary', 'separate'] },
+  'Grammar': { label: 'Grammar topic or rule', samples: ['subject verb agreement', 'tenses', 'active voice', 'direct speech'] }
+};
+
+const builtIn = {
+  benevolent: { meaning: 'दयालु, परोपकारी', syn: ['kind', 'charitable'], ant: ['cruel', 'selfish'], ex: 'A benevolent officer helped the villagers during the flood.', hi: 'एक दयालु अधिकारी ने बाढ़ के समय ग्रामीणों की मदद की।' },
+  diligent: { meaning: 'मेहनती, परिश्रमी', syn: ['hardworking', 'industrious'], ant: ['lazy', 'careless'], ex: 'A diligent aspirant revises vocabulary every day.', hi: 'एक मेहनती अभ्यर्थी रोज़ शब्दावली दोहराता है।' },
+  prudent: { meaning: 'समझदार, विवेकपूर्ण', syn: ['wise', 'careful'], ant: ['careless', 'foolish'], ex: 'A prudent decision can save time in the exam.', hi: 'एक विवेकपूर्ण निर्णय परीक्षा में समय बचा सकता है।' },
+  mitigate: { meaning: 'कम करना, घटाना', syn: ['reduce', 'lessen'], ant: ['increase', 'worsen'], ex: 'Regular practice can mitigate exam fear.', hi: 'नियमित अभ्यास परीक्षा के डर को कम कर सकता है।' },
+  obsolete: { meaning: 'पुराना, अप्रचलित', syn: ['outdated', 'old-fashioned'], ant: ['modern', 'current'], ex: 'Some obsolete words still appear in vocabulary questions.', hi: 'कुछ अप्रचलित शब्द अभी भी शब्दावली प्रश्नों में आते हैं।' },
+  philanthropist: { meaning: 'परोपकारी व्यक्ति', syn: ['benefactor', 'humanitarian'], ant: ['miser', 'selfish person'], ex: 'A philanthropist donated books to poor students.', hi: 'एक परोपकारी व्यक्ति ने गरीब छात्रों को किताबें दान कीं।' },
+  omniscient: { meaning: 'सर्वज्ञ, सब कुछ जानने वाला', syn: ['all-knowing', 'wise'], ant: ['ignorant', 'unaware'], ex: 'The narrator in the story is omniscient.', hi: 'कहानी का कथावाचक सर्वज्ञ है।' },
+  bibliophile: { meaning: 'पुस्तक प्रेमी', syn: ['book lover', 'reader'], ant: ['nonreader', 'book hater'], ex: 'A bibliophile spends most evenings reading.', hi: 'एक पुस्तक प्रेमी अधिकतर शामें पढ़ने में बिताता है।' }
+};
+
+let active = store.get('active-section', 'syllabus');
+let englishMode = store.get('english-mode', 'Antonyms & Synonyms');
+let current = null;
+let auth, db, user, remoteUnsub, syncTimer;
+let applyingRemote = false;
+
+function init() {
+  renderNav();
+  bindEvents();
+  renderEnglishModes();
+  renderSamples();
+  renderSyllabus();
+  renderHistory();
+  switchSection(active);
+  setTheme(store.get('theme', 'dark'));
+  initFirebase();
+}
+
+function bindEvents() {
+  $('addSyllabusBtn').onclick = addSyllabus;
+  $('clearSyllabusBtn').onclick = clearSyllabus;
+  $('generateEnglishBtn').onclick = generateEnglish;
+  $('saveEnglishBtn').onclick = saveCurrent;
+  $('clearEnglishBtn').onclick = clearEnglish;
+  $('saveGsBtn').onclick = saveCurrent;
+  $('saveMathBtn').onclick = saveCurrent;
+  $('saveReasonBtn').onclick = saveCurrent;
+  $('saveComputerBtn').onclick = saveCurrent;
+  $('printBtn').onclick = () => window.print();
+  $('jsonBtn').onclick = downloadJSON;
+  $('clearSavedBtn').onclick = clearSaved;
+  $('loginBtn').onclick = login;
+  $('logoutBtn').onclick = logout;
+  $('syncNowBtn').onclick = () => syncToCloud(true);
+  document.querySelectorAll('[data-analyse]').forEach(button => button.onclick = () => analysePaste(button.dataset.analyse));
+}
+
+function renderNav() {
+  const nav = $('mainNav');
+  nav.innerHTML = '';
+  sections.forEach(([id, label]) => {
+    const button = document.createElement('button');
+    button.textContent = label;
+    button.id = 'nav-' + id;
+    button.onclick = () => switchSection(id);
+    nav.appendChild(button);
+  });
+  const theme = document.createElement('button');
+  theme.className = 'icon-btn';
+  theme.id = 'themeBtn';
+  theme.onclick = toggleTheme;
+  nav.appendChild(theme);
+}
+
+function switchSection(id) {
+  if (id === 'computer-mode') id = 'computer';
+  if (!sections.some(section => section[0] === id)) id = 'syllabus';
+  active = id;
+  store.set('active-section', id);
+  document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
+  $(id).classList.remove('hidden');
+  document.querySelectorAll('#mainNav button:not(.icon-btn)').forEach(button => button.classList.remove('active'));
+  $('nav-' + id)?.classList.add('active');
+}
+
+function setTheme(theme) {
+  document.body.dataset.theme = theme;
+  store.set('theme', theme);
+  const button = $('themeBtn');
+  if (button) {
+    button.textContent = theme === 'dark' ? '☾' : '☀';
+    button.title = 'Switch theme';
+    button.setAttribute('aria-label', 'Switch theme');
+  }
+}
+function toggleTheme() { setTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark'); }
+
+function renderEnglishModes() {
+  const box = $('englishModes');
+  box.innerHTML = '';
+  Object.keys(englishModeData).forEach(mode => {
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (mode === englishMode ? ' active' : '');
+    chip.textContent = mode;
+    chip.onclick = () => {
+      englishMode = mode;
+      store.set('english-mode', mode);
+      renderEnglishModes();
+      renderSamples();
+      $('engLabel').textContent = englishModeData[mode].label;
+    };
+    box.appendChild(chip);
+  });
+  $('engLabel').textContent = englishModeData[englishMode].label;
+}
+
+function renderSamples() {
+  const box = $('engSamples');
+  box.innerHTML = '';
+  englishModeData[englishMode].samples.forEach(sample => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = sample;
+    chip.onclick = () => { $('engInput').value = sample; generateEnglish(); };
+    box.appendChild(chip);
+  });
+}
+
+function addSyllabus() {
+  const text = $('syllabusInput').value.trim();
+  if (!text) return;
+  const list = store.get('syllabus', []);
+  list.push({ id: crypto.randomUUID(), text, done: false, created: Date.now() });
+  setSyllabus(list);
+  $('syllabusInput').value = '';
+}
+function clearSyllabus() { if (confirm('Clear syllabus list?')) setSyllabus([]); }
+function setSyllabus(list) { store.set('syllabus', list); renderSyllabus(); queueSync(); }
+function renderSyllabus() {
+  const list = store.get('syllabus', []);
+  const done = list.filter(item => item.done).length;
+  $('syllabusProgress').textContent = `${done} / ${list.length} completed`;
+  const box = $('syllabusList');
+  box.innerHTML = list.length ? '' : '<div class="empty-state">No syllabus topics added yet.</div>';
+  list.forEach((item, index) => {
+    const row = document.createElement('div');
+    row.className = 'syllabus-row';
+    const check = document.createElement('input');
+    check.type = 'checkbox';
+    check.checked = !!item.done;
+    const span = document.createElement('span');
+    span.textContent = item.text;
+    check.onchange = event => { list[index].done = event.target.checked; setSyllabus(list); };
+    row.append(check, span);
+    box.appendChild(row);
+  });
+}
+
+function analysePaste(type) {
+  const ids = { gs: 'gsPaste', math: 'mathPaste', reason: 'reasonPaste', computer: 'computerPaste' };
+  const outs = { gs: 'gsOut', math: 'mathOut', reason: 'reasonOut', computer: 'computerOut' };
+  const text = $(ids[type]).value.trim();
+  if (!text) return;
+  const title = text.split(/[\n.]/)[0].slice(0, 80) || 'Revision note';
+  const subject = detectSubject(type, text);
+  const body = `Subject - ${title}\n\nSubject: ${subject}\n\nExam perspective:\n- Keep facts, formulas, definitions, and exceptions separately.\n- Convert long paragraphs into bullet points.\n- Mark PYQ/revision-worthy lines.\n\nClean note:\n${text}`;
+  current = { id: crypto.randomUUID(), section: sectionLabel(type), title, body, created: new Date().toLocaleString(), createdMs: Date.now() };
+  $(outs[type]).innerHTML = `<div class="out-title">${esc(current.section)}</div><div class="out">${esc(body)}</div>`;
+}
+function sectionLabel(type) { return { gs: 'General Studies', math: 'Mathematics', reason: 'Reasoning', computer: 'Computer' }[type] || type; }
+function detectSubject(type, text) {
+  const t = text.toLowerCase();
+  if (type === 'math') return 'Mathematics';
+  if (type === 'reason') return 'Reasoning';
+  if (type === 'computer') return 'Computer';
+  if (/river|mountain|monsoon|climate|soil|ocean|geography/.test(t)) return 'Geography';
+  if (/ancient|medieval|modern|mughal|british|history/.test(t)) return 'History';
+  if (/physics|chemistry|biology|cell|force|acid|science/.test(t)) return 'Science';
+  if (/constitution|parliament|president|polity/.test(t)) return 'Polity';
+  if (/economy|inflation|gdp|budget|tax/.test(t)) return 'Economics';
+  if (/environment|biodiversity|pollution/.test(t)) return 'Environment';
+  if (/current|appointment|award|scheme/.test(t)) return 'Current Affairs';
+  return 'Static GK';
+}
+
+function generateEnglish() {
+  const term = $('engInput').value.trim();
+  if (!term) return;
+  const key = term.toLowerCase();
+  const data = builtIn[key] || { meaning: 'Hindi meaning to be refined later', syn: ['related word 1', 'related word 2'], ant: ['opposite word 1', 'opposite word 2'], ex: `${term} is useful for exam vocabulary revision.`, hi: 'यह परीक्षा शब्दावली पुनरावृत्ति के लिए उपयोगी है।' };
+  const body = `Category: ${englishMode}\nHindi Meaning: ${data.meaning}\nSynonyms: ${data.syn.join(', ')}\nAntonyms: ${data.ant.join(', ')}\nExample: ${data.ex}\nExample Hindi: ${data.hi}`;
+  current = { id: crypto.randomUUID(), section: 'English', title: term, body, created: new Date().toLocaleString(), createdMs: Date.now() };
+  $('engOut').innerHTML = cards([
+    ['Word / Phrase', term], ['Category', englishMode], ['Hindi Meaning', data.meaning],
+    ['Synonyms', data.syn.join(', ')], ['Antonyms', data.ant.join(', ')], ['Example', data.ex], ['Example Hindi', data.hi]
+  ]);
+}
+function cards(rows) { return rows.map(([title, value]) => `<div class="box"><div class="out-title">${esc(title)}</div><div class="out">${esc(value)}</div></div>`).join(''); }
+function clearEnglish() { $('engInput').value = ''; $('engOut').innerHTML = ''; current = null; }
+
+function saveCurrent() {
+  if (!current) return;
+  const items = store.get('saved', []);
+  items.unshift({ ...current, id: current.id || crypto.randomUUID() });
+  setSaved(dedupe(items));
+  current = null;
+}
+function setSaved(items) { store.set('saved', items); renderHistory(); queueSync(); }
+function renderHistory() {
+  const h = $('history');
+  const items = store.get('saved', []);
+  h.innerHTML = items.length ? '' : '<div class="empty-state">No saved revision entries yet.</div>';
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<span class="tag">${esc(item.section)}</span><h3>${esc(item.title)}</h3><div class="small">${esc(item.created || '')}</div><div class="out">${esc(item.body)}</div>`;
+    h.appendChild(card);
+  });
+}
+function clearSaved() { if (confirm('Clear saved revision list?')) setSaved([]); }
+function downloadJSON() {
+  const blob = new Blob([JSON.stringify({ saved: store.get('saved', []), syllabus: store.get('syllabus', []) }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'abhyasam-ai-revision.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function dedupe(items) {
+  const seen = new Set();
+  return items.filter(item => {
+    const id = item.id || `${item.section}-${item.title}-${item.created}`;
+    item.id = id;
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+}
+
+function setSyncStatus(html) { $('syncStatus').innerHTML = html; }
+function localState() { return { saved: store.get('saved', []), syllabus: store.get('syllabus', []) }; }
+function applyState(data) {
+  applyingRemote = true;
+  store.set('saved', dedupe(data.saved || []));
+  store.set('syllabus', data.syllabus || []);
+  renderHistory();
+  renderSyllabus();
+  applyingRemote = false;
+}
+async function initFirebase() {
+  try {
+    const app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    onAuthStateChanged(auth, handleAuthState);
+  } catch (error) {
+    setSyncStatus('Firebase not ready. Local mode is active.');
+  }
+}
+async function login() {
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (error) { setSyncStatus(`Sign-in failed: ${esc(error.code || error.message)}`); }
+}
+async function logout() { if (auth) await signOut(auth); }
+async function handleAuthState(currentUser) {
+  user = currentUser;
+  if (remoteUnsub) { remoteUnsub(); remoteUnsub = null; }
+  if (!user) {
+    $('loginBtn').classList.remove('hidden');
+    $('logoutBtn').classList.add('hidden');
+    $('syncNowBtn').classList.add('hidden');
+    setSyncStatus('Local mode. Sign in to sync across devices.');
+    return;
+  }
+  $('loginBtn').classList.add('hidden');
+  $('logoutBtn').classList.remove('hidden');
+  $('syncNowBtn').classList.remove('hidden');
+  setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Sync starting...`);
+  const ref = doc(db, 'users', user.uid, 'state', 'main');
+  try {
+    const snap = await getDoc(ref);
+    const local = localState();
+    let merged = local;
+    if (snap.exists()) {
+      const cloud = snap.data() || {};
+      merged = { saved: dedupe([...(local.saved || []), ...(cloud.saved || [])]).sort((a, b) => (b.createdMs || 0) - (a.createdMs || 0)), syllabus: mergeSyllabus(local.syllabus || [], cloud.syllabus || []) };
+      applyState(merged);
+    }
+    await setDoc(ref, { ...merged, updatedAt: serverTimestamp() }, { merge: true });
+    remoteUnsub = onSnapshot(ref, snapshot => {
+      if (applyingRemote || !snapshot.exists()) return;
+      applyState(snapshot.data() || {});
+      setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Synced.`);
+    });
+    setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Synced.`);
+  } catch (error) {
+    setSyncStatus(`Signed in, but sync failed: ${esc(error.code || error.message)}`);
+  }
+}
+function mergeSyllabus(a, b) {
+  const map = new Map();
+  [...a, ...b].forEach(item => {
+    const id = item.id || item.text;
+    if (!map.has(id)) map.set(id, { ...item, id });
+    else map.set(id, { ...map.get(id), ...item, done: map.get(id).done || item.done });
+  });
+  return [...map.values()];
+}
+function queueSync() {
+  if (applyingRemote || !user || !db) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => syncToCloud(false), 700);
+}
+async function syncToCloud(manual) {
+  if (!user || !db) { if (manual) setSyncStatus('Sign in first to sync.'); return; }
+  try {
+    await setDoc(doc(db, 'users', user.uid, 'state', 'main'), { ...localState(), updatedAt: serverTimestamp() }, { merge: true });
+    setSyncStatus(`Signed in as <strong>${esc(user.email || 'user')}</strong>. Synced.`);
+  } catch (error) {
+    setSyncStatus(`Sync failed: ${esc(error.code || error.message)}`);
+  }
+}
+
+init();
