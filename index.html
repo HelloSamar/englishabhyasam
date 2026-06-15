@@ -61,6 +61,9 @@ Subject can be Geography, History, Science, Polity, Economics, Environment, Stat
 </div>
 <script>
 try {
+  if (localStorage.getItem('theme') === null) {
+    localStorage.setItem('theme', JSON.stringify('light'));
+  }
   if (!localStorage.getItem('abhyasam-default-english-v1')) {
     localStorage.setItem('active-section', JSON.stringify('english'));
     localStorage.setItem('abhyasam-default-english-v1', JSON.stringify(true));
