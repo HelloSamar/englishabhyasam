@@ -26,10 +26,25 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Enable required Google Cloud APIs
+        run: |
+          set -e
+          gcloud services enable \
+            secretmanager.googleapis.com \
+            cloudfunctions.googleapis.com \
+            cloudbuild.googleapis.com \
+            artifactregistry.googleapis.com \
+            run.googleapis.com \
+            eventarc.googleapis.com \
+            firebase.googleapis.com \
+            --project=abhyasam-ai \
+            --quiet
+
       - name: Create or update OpenAI secret
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
+          set -e
           test -n "$OPENAI_API_KEY"
           if gcloud secrets describe OPENAI_API_KEY --project=abhyasam-ai >/dev/null 2>&1; then
             printf "%s" "$OPENAI_API_KEY" | gcloud secrets versions add OPENAI_API_KEY --data-file=- --project=abhyasam-ai
